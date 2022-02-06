@@ -1,7 +1,15 @@
 import React from 'react';
+import Footer from '../../shared/footer/footer';
 
 function Statistics() {
-  return <h1>Statistics</h1>;
+  return (
+    <>
+      <main>
+        <h1>Statistics</h1>
+      </main>
+      <Footer />
+    </>
+  );
 }
 
 export default Statistics;
