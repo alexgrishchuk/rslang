@@ -6,13 +6,13 @@ import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
 import Menu from '@mui/material/Menu';
 import MenuIcon from '@mui/icons-material/Menu';
-import Container from '@mui/material/Container';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import { useNavigate } from 'react-router-dom';
 import PAGES from '../data/pages';
+import AppContainer from '../app-container/app-container';
 
 const pages = [PAGES.MAIN, PAGES.TUTORIAL, PAGES.SPRINT, PAGES.AUDIO_CALL, PAGES.STATISTICS, PAGES.ABOUT_TEAM];
 
@@ -47,7 +47,7 @@ function ResponsiveAppBar() {
 
   return (
     <AppBar position="static">
-      <Container maxWidth={false} sx={{ maxWidth: 1920 }}>
+      <AppContainer>
         <Toolbar disableGutters>
           <Typography variant="h6" noWrap component="div" sx={{ mr: 2, display: { xs: 'none', md: 'flex' } }}>
             {APP_LOGO}
@@ -141,7 +141,7 @@ function ResponsiveAppBar() {
             </Menu>
           </Box>
         </Toolbar>
-      </Container>
+      </AppContainer>
     </AppBar>
   );
 }
