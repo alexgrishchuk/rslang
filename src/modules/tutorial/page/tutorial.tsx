@@ -3,10 +3,10 @@ import Pagination from '../components/pagination';
 
 function Tutorial() {
   return (
-    <h1>
-      Tutorial
+    <>
+      <h1>Tutorial</h1>
       <Pagination />
-    </h1>
+    </>
   );
 }
 
