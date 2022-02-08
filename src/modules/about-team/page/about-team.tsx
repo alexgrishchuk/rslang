@@ -1,7 +1,15 @@
 import React from 'react';
+import Footer from '../../shared/footer/footer';
 
 function AboutTeam() {
-  return <h1>About-team</h1>;
+  return (
+    <>
+      <main>
+        <h1>About-team</h1>
+      </main>
+      <Footer />
+    </>
+  );
 }
 
 export default AboutTeam;

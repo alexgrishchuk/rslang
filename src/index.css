@@ -11,3 +11,20 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+.footer {
+  background-color: #1976d2;
+  color: #fff;
+  padding: .5rem 0;
+}
+
+main {
+  min-height: calc(100vh - 158px);
+}
+
+.footer__logo {
+  height: 3rem;
+  transition: 1s;
+  filter: invert(97%) sepia(3%) saturate(253%) hue-rotate(274deg) brightness(122%) contrast(100%);
+}
+.footer__logo:hover { transform: scale(1.1) }
