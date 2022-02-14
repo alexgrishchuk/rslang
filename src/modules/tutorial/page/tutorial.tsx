@@ -12,29 +12,48 @@ import { CATEGORIES } from '../data/const';
 import Footer from '../../shared/footer/footer';
 import { getWords, WordInfo } from '../../../backend-requests/words-requests';
 
+interface IData {
+  ssPage: number;
+  ssGroup: number;
+}
+
 function Tutorial() {
-  const [items, setState] = useState<WordInfo[] | undefined>([]);
+  const [items, setItems] = useState<WordInfo[] | undefined>([]);
   const [page, setPage] = useState(0);
   const [group, setGroup] = useState(0);
   const [colorCategory, setColorCategory] = useState('#ffeb3b');
+  const [isFirst, setIsFirst] = useState(true);
+  const MAX_PAGE = 30;
 
   const handleChange = async (event: React.ChangeEvent<unknown>, value: number): Promise<void> => {
     setPage(value - 1);
     const request: WordInfo[] = await getWords(group, value - 1);
-    await setState([...request]);
+    setItems([...request]);
   };
 
   const setNewGroup = async (newGroup: number, color: string): Promise<void> => {
-    setGroup(newGroup);
     setPage(0);
+    setGroup(newGroup);
     const request: WordInfo[] = await getWords(newGroup, page);
-    await setState([...request]);
+    setItems([...request]);
     setColorCategory(color);
   };
 
+  // set prev page
   useEffect(() => {
-    sessionStorage.setItem('pageGroup', JSON.stringify({ ssPage: page, ssGroup: group }));
-  }, [page, group]);
+    if (isFirst) {
+      setIsFirst(false);
+      const SSdata: string | null = sessionStorage.getItem('pageGroup');
+      if (SSdata) {
+        const data: IData = JSON.parse(SSdata);
+        setPage(data.ssPage);
+        setGroup(data.ssGroup);
+      }
+    } else {
+      sessionStorage.setItem('pageGroup', JSON.stringify({ ssPage: page, ssGroup: group }));
+      setGroup(group);
+    }
+  }, [isFirst, page, group]);
 
   return (
     <>
@@ -51,9 +70,9 @@ function Tutorial() {
               </Card>
             ))}
           </Stack>
-          {items?.length !== 0 && (
+          {!!items?.length && (
             <Pagination
-              count={30}
+              count={MAX_PAGE}
               page={page + 1}
               onChange={handleChange}
               color="primary"

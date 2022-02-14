@@ -20,32 +20,16 @@ function AudioBtn(props: {
   const [isBtn, setIsBtn] = useState(true);
 
   const play = (): void => {
-    const audWord = new Audio(`${URL_PATH}${audio}`);
-    const audMeaning = new Audio(`${URL_PATH}${audioMeaning}`);
-    const audExample = new Audio(`${URL_PATH}${audioExample}`);
+    const audWord: HTMLAudioElement = new Audio(`${URL_PATH}${audio}`);
+    const audMeaning: HTMLAudioElement = new Audio(`${URL_PATH}${audioMeaning}`);
+    const audExample: HTMLAudioElement = new Audio(`${URL_PATH}${audioExample}`);
 
-    setIsBtn(!isBtn);
     if (isBtn) {
+      setIsBtn(false);
       audWord.play();
-
-      audWord.onended = () => {
-        audMeaning.play();
-      };
-
-      audMeaning.onended = () => {
-        audExample.play();
-      };
-
-      audExample.onended = () => {
-        setIsBtn(true);
-      };
-    } else {
-      audWord.pause();
-      audWord.currentTime = 0;
-      audExample.pause();
-      audExample.currentTime = 0;
-      audMeaning.pause();
-      audMeaning.currentTime = 0;
+      audWord.onended = () => audMeaning.play();
+      audMeaning.onended = () => audExample.play();
+      audExample.onended = () => setIsBtn(true);
     }
   };
 
