@@ -36,6 +36,13 @@ const ENDPOINTS = {
   createUserWord(userId: string, wordId: string) {
     return `${URL}/users/${userId}/words/${wordId}`;
   },
+
+  removeUserWord(userId: string, wordId: string) {
+    return `${URL}/users/${userId}/words/${wordId}`;
+  },
+  getUserWord(userId: string, wordId: string) {
+    return `${URL}/users/${userId}/words/${wordId}`;
+  },
 };
 
 export default ENDPOINTS;

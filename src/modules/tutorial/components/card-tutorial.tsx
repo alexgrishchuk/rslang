@@ -10,6 +10,7 @@ import WrapperBtn from './wrapper-btn';
 
 function CardTutorial(props: {
   colorCard: string;
+  isAuthenticated: boolean;
   data: {
     id: string;
     image: string;
@@ -28,6 +29,7 @@ function CardTutorial(props: {
   const {
     colorCard,
     data,
+    isAuthenticated,
     data: {
       image,
       wordTranslate,
@@ -43,7 +45,6 @@ function CardTutorial(props: {
     },
   } = props;
   const urlImg = `${URL_PATH}${image}`;
-  const isAuthorized = true;
 
   return (
     <Card sx={{ maxWidth: 400 }}>
@@ -65,7 +66,7 @@ function CardTutorial(props: {
         <Typography variant="body2" color="text.secondary">
           {textExampleTranslate}
         </Typography>
-        {isAuthorized && <WrapperBtn data={data} />}
+        {isAuthenticated && <WrapperBtn data={data} />}
       </CardContent>
     </Card>
   );

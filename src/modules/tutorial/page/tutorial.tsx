@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { ReactElement, useEffect, useState } from 'react';
 
 import Card from '@mui/material/Card';
 import Container from '@mui/material/Container';
@@ -17,14 +17,14 @@ interface IData {
   ssGroup: number;
 }
 
-function Tutorial() {
+function Tutorial(props: { isAuthenticated: boolean }): ReactElement {
+  const { isAuthenticated } = props;
   const [items, setItems] = useState<WordInfo[] | undefined>([]);
   const [page, setPage] = useState(0);
   const [group, setGroup] = useState(0);
   const [colorCategory, setColorCategory] = useState('#ffeb3b');
   const [isFirst, setIsFirst] = useState(true);
   const MAX_PAGE = 30;
-
   const handleChange = async (event: React.ChangeEvent<unknown>, value: number): Promise<void> => {
     setPage(value - 1);
     const request: WordInfo[] = await getWords(group, value - 1);
@@ -82,7 +82,7 @@ function Tutorial() {
           <Grid container spacing={1} columns={{ xs: 6, sm: 9, md: 12 }} sx={{ m: 2 }}>
             {items?.map((elem: WordInfo) => (
               <Grid item xs={3} key={elem.id}>
-                <CardTutorial data={elem} colorCard={colorCategory} />
+                <CardTutorial isAuthenticated={isAuthenticated} data={elem} colorCard={colorCategory} />
               </Grid>
             ))}
           </Grid>

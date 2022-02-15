@@ -42,3 +42,27 @@ export async function createCurrentUserWord(wordId: string, info: IWordInfo): Pr
   const userId = getUserIdFromStorage();
   return userId !== null ? createUserWord(userId, wordId, info) : false;
 }
+
+async function removeUserWord(userId: string, wordId: string): Promise<boolean> {
+  const init: RequestInit = { method: 'DELETE' };
+
+  const response = await request(ENDPOINTS.removeUserWord(userId, wordId), init);
+  return Boolean(response && response.ok);
+}
+
+export async function removeCurrentUserWord(wordId: string): Promise<boolean> {
+  const userId = getUserIdFromStorage();
+  return userId !== null ? removeUserWord(userId, wordId) : false;
+}
+
+async function getUserWord(userId: string, wordId: string): Promise<boolean> {
+  const init: RequestInit = { method: 'GET' };
+
+  const response = await request(ENDPOINTS.getUserWord(userId, wordId), init);
+  return Boolean(response && response.ok);
+}
+
+export async function getCurrentUserWord(wordId: string): Promise<boolean> {
+  const userId = getUserIdFromStorage();
+  return userId !== null ? getUserWord(userId, wordId) : false;
+}

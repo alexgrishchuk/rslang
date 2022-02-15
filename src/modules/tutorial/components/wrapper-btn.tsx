@@ -1,9 +1,14 @@
-import React, { ReactElement, useState } from 'react';
+import React, { ReactElement, useEffect, useState } from 'react';
 
 import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
 import Add from '@mui/icons-material/Add';
 import AddTask from '@mui/icons-material/AddTask';
+import {
+  createCurrentUserWord,
+  getCurrentUserWord,
+  removeCurrentUserWord,
+} from '../../../backend-requests/user-words-requests';
 
 function WrapperBtn(props: {
   data: {
@@ -23,23 +28,37 @@ function WrapperBtn(props: {
 }): ReactElement {
   const {
     data,
-    data: { id },
+    data: { id, word },
   } = props;
-
   const [difficultWord, setDifficultWord] = useState(false);
   const [learnedWord, setLearnedWord] = useState(false);
 
   const changeDifficultWord = async () => {
+    if (!difficultWord) {
+      createCurrentUserWord(id, { difficulty: word, optional: data });
+    } else {
+      removeCurrentUserWord(id);
+    }
+
     setDifficultWord(!difficultWord);
-    console.log('id', id);
-    console.log('data', data);
   };
 
   const changeLearnedWord = () => {
     setLearnedWord(!learnedWord);
-    console.log('id', id);
-    console.log('data', data);
   };
+
+  useEffect(() => {
+    async function fetchData() {
+      const response = await getCurrentUserWord(id);
+      if (response) {
+        setDifficultWord(true);
+      } else {
+        setDifficultWord(false);
+      }
+    }
+
+    fetchData();
+  });
 
   return (
     <Stack direction="row" spacing={2} justifyContent="space-around" mt={2}>
