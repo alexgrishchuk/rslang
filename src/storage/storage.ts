@@ -50,7 +50,7 @@ export function getUserIdFromStorage(): string | null {
   return userInfo ? userInfo.userId : null;
 }
 
-export function isAuthenticated(): boolean {
+export function isUserAuthenticated(): boolean {
   const userInfo = getUserInfoFromStorage();
-  return userInfo && userInfo.message === 'Authenticated' ? true : false;
+  return !!userInfo && userInfo.message === 'Authenticated';
 }
