@@ -102,7 +102,7 @@ export default function RegisterDialog({ onCloseCallback, onLoginCallback }: Reg
         error={formik.touched.password && Boolean(formik.errors.password)}
         helperText={formik.touched.password && formik.errors.password}
       />
-      <DialogActions>
+      <DialogActions sx={{ display: 'flex', flexWrap: 'wrap-reverse' }}>
         <Button onClick={onCloseCallback}>Отмена</Button>
         <Button type="submit" ref={submitButton}>
           Зарегистрироваться
