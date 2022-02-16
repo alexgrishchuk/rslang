@@ -1,4 +1,4 @@
-import React, { ReactElement, useEffect, useState } from 'react';
+import React, { Component } from 'react';
 
 import Card from '@mui/material/Card';
 import Container from '@mui/material/Container';
@@ -7,90 +7,120 @@ import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
 import Grid from '@mui/material/Grid';
 import Pagination from '@mui/material/Pagination';
+
 import CardTutorial from '../components/card-tutorial';
-import { CATEGORIES } from '../data/const';
+import { CATEGORIES, IUserWord } from '../data/const';
 import Footer from '../../shared/footer/footer';
 import { getWords, WordInfo } from '../../../backend-requests/words-requests';
+// import { getCurrentAggregatedWords, IAgrWords } from '../../../backend-requests/aggregated-words-requests';
+import { getAllCurrentUserWords } from '../../../backend-requests/user-words-requests';
 
-interface IData {
-  ssPage: number;
-  ssGroup: number;
+type IProps = {
+  isAuthenticated: boolean;
+};
+interface IState {
+  items: WordInfo[];
+  page: number;
+  group: number;
+  colorCategory: string;
+  userItems: Array<IUserWord>;
 }
 
-function Tutorial(props: { isAuthenticated: boolean }): ReactElement {
-  const { isAuthenticated } = props;
-  const [items, setItems] = useState<WordInfo[] | undefined>([]);
-  const [page, setPage] = useState(0);
-  const [group, setGroup] = useState(0);
-  const [colorCategory, setColorCategory] = useState('#ffeb3b');
-  const [isFirst, setIsFirst] = useState(true);
-  const MAX_PAGE = 30;
-  const handleChange = async (event: React.ChangeEvent<unknown>, value: number): Promise<void> => {
-    setPage(value - 1);
-    const request: WordInfo[] = await getWords(group, value - 1);
-    setItems([...request]);
-  };
+class Tutorial extends Component<IProps, IState> {
+  constructor(props: IProps) {
+    super(props);
 
-  const setNewGroup = async (newGroup: number, color: string): Promise<void> => {
-    setPage(0);
-    setGroup(newGroup);
-    const request: WordInfo[] = await getWords(newGroup, page);
-    setItems([...request]);
-    setColorCategory(color);
-  };
+    this.state = {
+      items: [],
+      page: 0,
+      group: 0,
+      colorCategory: '#ffeb3b',
+      userItems: [],
+    };
+  }
 
-  // set prev page
-  useEffect(() => {
-    if (isFirst) {
-      setIsFirst(false);
-      const SSdata: string | null = sessionStorage.getItem('pageGroup');
-      if (SSdata) {
-        const data: IData = JSON.parse(SSdata);
-        setPage(data.ssPage);
-        setGroup(data.ssGroup);
-      }
+  async componentDidMount() {
+    const response: Array<IUserWord> = await getAllCurrentUserWords();
+    this.setState({ userItems: [...response] });
+  }
+
+  setNewGroup = async (newGroup: number, color: string): Promise<void> => {
+    if (newGroup === 6) {
+      // const aggregatedWords: IAgrWords[] = await getCurrentAggregatedWords();
+      // this.setState({
+      //   items: [...aggregatedWords],
+      //   colorCategory: color,
+      //   page: 0,
+      //   group: newGroup,
+      // });
     } else {
-      sessionStorage.setItem('pageGroup', JSON.stringify({ ssPage: page, ssGroup: group }));
-      setGroup(group);
+      const request: WordInfo[] = await getWords(newGroup, 0);
+      this.setState({
+        items: [...request],
+        colorCategory: color,
+        page: 0,
+        group: newGroup,
+      });
     }
-  }, [isFirst, page, group]);
+  };
 
-  return (
-    <>
-      <main>
-        <Container maxWidth={false} sx={{ maxWidth: 1920 }}>
-          <Stack direction="row" justifyContent="center" alignItems="flex-start" spacing={2} sx={{ m: 2 }}>
-            {CATEGORIES.map((item) => (
-              <Card variant="outlined" sx={{ maxWidth: 345 }} key={item.id}>
-                <Button onClick={() => setNewGroup(item.id, item.color)} variant="outlined">
-                  <Typography m={1} variant="h6" color={item.color}>
-                    {item.name}
-                  </Typography>
-                </Button>
-              </Card>
-            ))}
-          </Stack>
-          {!!items?.length && (
-            <Pagination
-              count={MAX_PAGE}
-              page={page + 1}
-              onChange={handleChange}
-              color="primary"
-              sx={{ display: 'flex', justifyContent: 'center', m: 2 }}
-            />
-          )}
-          <Grid container spacing={1} columns={{ xs: 6, sm: 9, md: 12 }} sx={{ m: 2 }}>
-            {items?.map((elem: WordInfo) => (
-              <Grid item xs={3} key={elem.id}>
-                <CardTutorial isAuthenticated={isAuthenticated} data={elem} colorCard={colorCategory} />
-              </Grid>
-            ))}
-          </Grid>
-        </Container>
-      </main>
-      <Footer />
-    </>
-  );
+  handleChange = async (_event: React.ChangeEvent<unknown>, value: number): Promise<void> => {
+    const { group } = this.state;
+    const request: WordInfo[] = await getWords(group, value - 1);
+
+    this.setState({
+      items: [...request],
+      page: value - 1,
+    });
+  };
+
+  render() {
+    const MAX_PAGE = 30;
+    const { items, page, colorCategory, userItems } = this.state;
+    const { isAuthenticated } = this.props;
+
+    return (
+      <>
+        <main>
+          <Container maxWidth={false} sx={{ maxWidth: 1920 }}>
+            <Stack direction="row" justifyContent="center" alignItems="flex-start" spacing={2} sx={{ m: 2 }}>
+              {CATEGORIES.map((item) => (
+                <Card variant="outlined" sx={{ maxWidth: 345 }} key={item.id}>
+                  <Button onClick={() => this.setNewGroup(item.id, item.color)} variant="outlined">
+                    <Typography m={1} variant="h6" color={item.color}>
+                      {item.name}
+                    </Typography>
+                  </Button>
+                </Card>
+              ))}
+            </Stack>
+            {!!items?.length && (
+              <Pagination
+                count={MAX_PAGE}
+                page={page + 1}
+                onChange={this.handleChange}
+                color="primary"
+                sx={{ display: 'flex', justifyContent: 'center', m: 2 }}
+              />
+            )}
+            <Grid container spacing={1} columns={{ xs: 6, sm: 9, md: 12 }} sx={{ m: 2 }}>
+              {items?.map((elem: WordInfo) => (
+                <Grid item xs={3} key={elem.id}>
+                  <CardTutorial
+                    userItems={userItems}
+                    isAuthenticated={isAuthenticated}
+                    data={elem}
+                    colorCard={colorCategory}
+                  />
+                </Grid>
+              ))}
+            </Grid>
+          </Container>
+        </main>
+        <Footer />
+      </>
+    );
+  }
 }
 
 export default Tutorial;

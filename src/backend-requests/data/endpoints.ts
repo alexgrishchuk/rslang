@@ -43,6 +43,12 @@ const ENDPOINTS = {
   getUserWord(userId: string, wordId: string) {
     return `${URL}/users/${userId}/words/${wordId}`;
   },
+  putUserWord(userId: string, wordId: string) {
+    return `${URL}/users/${userId}/words/${wordId}`;
+  },
+  getAggregatedWords(userId: string) {
+    return `${URL}/users/${userId}/aggregatedWords`;
+  },
 };
 
 export default ENDPOINTS;

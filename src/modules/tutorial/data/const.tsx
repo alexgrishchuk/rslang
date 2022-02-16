@@ -1,8 +1,17 @@
+import { WordInfo } from '../../../backend-requests/words-requests';
+
+export interface IUserWord {
+  difficulty: string;
+  id: string;
+  optional?: WordInfo;
+  wordId: string;
+}
 interface ICategories {
   id: number;
   name: string;
   color: string;
 }
+
 const URL_PATH = 'http://localhost:8000/';
 
 const CATEGORIES: ICategories[] = [

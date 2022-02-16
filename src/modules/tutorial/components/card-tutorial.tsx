@@ -4,29 +4,20 @@ import Card from '@mui/material/Card';
 import CardMedia from '@mui/material/CardMedia';
 import CardContent from '@mui/material/CardContent';
 import Typography from '@mui/material/Typography';
-import { URL_PATH } from '../data/const';
+
+import { URL_PATH, IUserWord } from '../data/const';
 import AudioBtn from './audio';
 import WrapperBtn from './wrapper-btn';
+import { WordInfo } from '../../../backend-requests/words-requests';
 
 function CardTutorial(props: {
   colorCard: string;
   isAuthenticated: boolean;
-  data: {
-    id: string;
-    image: string;
-    wordTranslate: string;
-    word: string;
-    transcription: string;
-    textExample: string;
-    textExampleTranslate: string;
-    textMeaning: string;
-    textMeaningTranslate: string;
-    audio: string;
-    audioExample: string;
-    audioMeaning: string;
-  };
+  data: WordInfo;
+  userItems: Array<IUserWord>;
 }): ReactElement {
   const {
+    userItems,
     colorCard,
     data,
     isAuthenticated,
@@ -66,7 +57,7 @@ function CardTutorial(props: {
         <Typography variant="body2" color="text.secondary">
           {textExampleTranslate}
         </Typography>
-        {isAuthenticated && <WrapperBtn data={data} />}
+        {isAuthenticated && <WrapperBtn userItems={userItems} data={data} />}
       </CardContent>
     </Card>
   );
