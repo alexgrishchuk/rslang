@@ -54,7 +54,7 @@ export default function LoginMenu({ onLogIn }: LoginProps) {
       <Button onClick={handleClickOpen} color="inherit">
         Войти
       </Button>
-      <Dialog open={open} onClose={handleClose}>
+      <Dialog fullWidth open={open} onClose={handleClose}>
         <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
           <Tabs value={tabIndex} onChange={handleChange} aria-label="basic tabs example">
             <Tab label="Вход" id="simple-tab-0" aria-controls="simple-tabpanel-0" />
