@@ -28,34 +28,70 @@ interface IState {
 class Tutorial extends Component<IProps, IState> {
   constructor(props: IProps) {
     super(props);
+    const ssData: string | null = sessionStorage.getItem('groupPage');
+    let pgData = {
+      page: 0,
+      group: 0,
+    };
+
+    if (ssData) {
+      pgData = JSON.parse(ssData);
+    }
 
     this.state = {
       items: [],
-      page: 0,
-      group: 0,
+      page: pgData.page,
+      group: pgData.group,
       colorCategory: '#ffeb3b',
       userItems: [],
     };
   }
 
   async componentDidMount() {
+    const { page, group } = this.state;
     const response: Array<IUserWord> = await getAllCurrentUserWords();
-    this.setState({ userItems: [...response] });
+    const request: WordInfo[] = await getWords(group, page);
+    if (group === 6) {
+      this.setSixGroup();
+    }
+
+    if (response) this.setState({ userItems: [...response] });
+    this.setState({ items: [...request] });
   }
 
-  setNewGroup = async (newGroup: number, color: string): Promise<void> => {
-    if (newGroup === 6) {
-      const { userItems } = this.state;
-      const arrHardWords = userItems.filter((elem: IUserWord) => elem.difficulty === 'hard');
+  componentDidUpdate() {
+    const { page, group } = this.state;
+    sessionStorage.setItem('groupPage', JSON.stringify({ page, group }));
+  }
+
+  async setUserItems() {
+    const response: Array<IUserWord> | undefined = await getAllCurrentUserWords();
+    if (response) {
+      this.setState({ userItems: [...response] });
+    }
+  }
+
+  setSixGroup = async () => {
+    const response: Array<IUserWord> = await getAllCurrentUserWords();
+    if (response) {
+      const arrHardWords = response.filter((elem: IUserWord) => elem.difficulty === 'hard');
       const arr = arrHardWords.map(async (elem) => getWordById(elem.wordId));
       const promiseWords = await Promise.all(arr);
+      const NUMBER_GROUP = 6;
+      const COLOR_GROUP = '#d50000';
+      this.setUserItems();
 
       this.setState({
         items: [...promiseWords],
-        colorCategory: color,
-        page: 0,
-        group: newGroup,
+        colorCategory: COLOR_GROUP,
+        group: NUMBER_GROUP,
       });
+    }
+  };
+
+  setNewGroup = async (newGroup: number, color: string): Promise<void> => {
+    if (newGroup === 6) {
+      this.setSixGroup();
     } else {
       const request: WordInfo[] = await getWords(newGroup, 0);
       this.setState({
@@ -79,7 +115,7 @@ class Tutorial extends Component<IProps, IState> {
 
   render() {
     const MAX_PAGE = 30;
-    const { items, page, colorCategory, userItems } = this.state;
+    const { items, page, group, colorCategory, userItems } = this.state;
     const { isAuthenticated } = this.props;
 
     return (
@@ -89,7 +125,10 @@ class Tutorial extends Component<IProps, IState> {
             <Stack direction="row" justifyContent="center" alignItems="flex-start" spacing={2} sx={{ m: 2 }}>
               {CATEGORIES.map((item) => (
                 <Card variant="outlined" sx={{ maxWidth: 345 }} key={item.id}>
-                  <Button onClick={() => this.setNewGroup(item.id, item.color)} variant="outlined">
+                  <Button
+                    onClick={() => this.setNewGroup(item.id, item.color)}
+                    variant={group === item.id ? 'contained' : 'outlined'}
+                  >
                     <Typography m={1} variant="h6" color={item.color}>
                       {item.name}
                     </Typography>
@@ -97,7 +136,7 @@ class Tutorial extends Component<IProps, IState> {
                 </Card>
               ))}
             </Stack>
-            {!!items?.length && (
+            {!!items?.length && group !== 6 && (
               <Pagination
                 count={MAX_PAGE}
                 page={page + 1}

@@ -34,7 +34,6 @@ class WrapperBtn extends Component<IProps, IState> {
       userItems,
       data: { id },
     } = this.props;
-
     const isDifficultWord = userItems.find((elem: IUserWord) => elem.wordId === id && elem.difficulty === 'hard');
     const isLearnedWord = userItems.find((elem: IUserWord) => elem.wordId === id && elem.difficulty === 'easy');
 

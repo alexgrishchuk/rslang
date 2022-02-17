@@ -28,3 +28,7 @@ main {
   filter: invert(97%) sepia(3%) saturate(253%) hue-rotate(274deg) brightness(122%) contrast(100%);
 }
 .footer__logo:hover { transform: scale(1.1) }
+
+.hard-card { background-color: #ffd4d4 }
+
+.easy-card { background-color: #e2ffe2 }
