@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Routes, Route } from 'react-router-dom';
-import ResponsiveAppBar from '../shared/main-menu/main-menu';
+import ResponsiveAppBar from '../main-menu/main-menu';
 import PAGES from '../shared/data/pages';
 import { removeUserInfoFromStorage, isUserAuthenticated } from '../../storage/storage';
 

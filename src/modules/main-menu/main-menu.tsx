@@ -9,8 +9,8 @@ import MenuIcon from '@mui/icons-material/Menu';
 import Button from '@mui/material/Button';
 import MenuItem from '@mui/material/MenuItem';
 import { useNavigate } from 'react-router-dom';
-import PAGES from '../data/pages';
-import AppContainer from '../app-container/app-container';
+import PAGES from '../shared/data/pages';
+import AppContainer from '../shared/app-container/app-container';
 import LoginMenu from './components/login-menu';
 import AuthMenu from './components/auth-menu';
 
