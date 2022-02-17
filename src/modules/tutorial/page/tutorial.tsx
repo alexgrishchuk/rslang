@@ -11,8 +11,7 @@ import Pagination from '@mui/material/Pagination';
 import CardTutorial from '../components/card-tutorial';
 import { CATEGORIES, IUserWord } from '../data/const';
 import Footer from '../../shared/footer/footer';
-import { getWords, WordInfo } from '../../../backend-requests/words-requests';
-// import { getCurrentAggregatedWords, IAgrWords } from '../../../backend-requests/aggregated-words-requests';
+import { getWordById, getWords, WordInfo } from '../../../backend-requests/words-requests';
 import { getAllCurrentUserWords } from '../../../backend-requests/user-words-requests';
 
 type IProps = {
@@ -46,13 +45,17 @@ class Tutorial extends Component<IProps, IState> {
 
   setNewGroup = async (newGroup: number, color: string): Promise<void> => {
     if (newGroup === 6) {
-      // const aggregatedWords: IAgrWords[] = await getCurrentAggregatedWords();
-      // this.setState({
-      //   items: [...aggregatedWords],
-      //   colorCategory: color,
-      //   page: 0,
-      //   group: newGroup,
-      // });
+      const { userItems } = this.state;
+      const arrHardWords = userItems.filter((elem: IUserWord) => elem.difficulty === 'hard');
+      const arr = arrHardWords.map(async (elem) => getWordById(elem.wordId));
+      const promiseWords = await Promise.all(arr);
+
+      this.setState({
+        items: [...promiseWords],
+        colorCategory: color,
+        page: 0,
+        group: newGroup,
+      });
     } else {
       const request: WordInfo[] = await getWords(newGroup, 0);
       this.setState({
