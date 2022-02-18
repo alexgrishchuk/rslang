@@ -8,6 +8,7 @@ import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
 import Add from '@mui/icons-material/Add';
 import AddTask from '@mui/icons-material/AddTask';
+import Box from '@mui/material/Box';
 
 import { URL_PATH, IUserWord } from '../data/const';
 import AudioBtn from './audio';
@@ -37,7 +38,6 @@ class CardTutorial extends Component<IProps, IState> {
   }
 
   async componentDidMount() {
-    console.log('componentDidMount');
     const {
       userItems,
       data: { id },
@@ -136,7 +136,7 @@ class CardTutorial extends Component<IProps, IState> {
 
     return (
       <Card sx={{ minHeight: 600 }}>
-        <CardMedia component="img" image={urlImg} alt={word} height="220" />
+        <CardMedia component="img" image={urlImg} alt={word} height="275" />
         <CardContent className={classNameBG}>
           <Typography gutterBottom variant="h4" color={colorCard} mb={0}>
             {word}
@@ -145,24 +145,27 @@ class CardTutorial extends Component<IProps, IState> {
           <Typography variant="h6" color="text.secondary">
             {wordTranslate} - {transcription}
           </Typography>
-          <Typography
-            dangerouslySetInnerHTML={{ __html: textMeaning }}
-            variant="subtitle2"
-            sx={{ mt: 1, minHeight: 50 }}
-            align="center"
-          />
-          <Typography variant="body2" color="text.secondary" sx={{ mt: 1, minHeight: 50 }}>
-            {textMeaningTranslate}
-          </Typography>
+          <Box sx={{ height: 100 }}>
+            <Typography
+              dangerouslySetInnerHTML={{ __html: textMeaning }}
+              variant="subtitle2"
+              sx={{ mt: 1, maxHeight: 40 }}
+            />
+            <Typography variant="caption" color="text.secondary" sx={{ mt: 1, maxHeight: 60 }}>
+              {textMeaningTranslate}
+            </Typography>
+          </Box>
           <hr color={colorCard} />
-          <Typography
-            dangerouslySetInnerHTML={{ __html: textExample }}
-            variant="subtitle2"
-            sx={{ mt: 1, minHeight: 50 }}
-          />
-          <Typography variant="body2" color="text.secondary" sx={{ mt: 1, minHeight: 50 }}>
-            {textExampleTranslate}
-          </Typography>
+          <Box sx={{ height: 100 }}>
+            <Typography
+              dangerouslySetInnerHTML={{ __html: textExample }}
+              variant="subtitle2"
+              sx={{ mt: 1, minHeight: 40 }}
+            />
+            <Typography variant="caption" color="text.secondary" sx={{ mt: 1, minHeight: 60 }}>
+              {textExampleTranslate}
+            </Typography>
+          </Box>
           {isAuthenticated && (
             <Stack direction="row" spacing={2} justifyContent="space-around">
               <Button

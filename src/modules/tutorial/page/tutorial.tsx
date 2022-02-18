@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 
-import Card from '@mui/material/Card';
+// import Card from '@mui/material/Card';
 import Container from '@mui/material/Container';
 import Typography from '@mui/material/Typography';
-import Stack from '@mui/material/Stack';
+// import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
 import Grid from '@mui/material/Grid';
 import Pagination from '@mui/material/Pagination';
@@ -48,7 +48,6 @@ class Tutorial extends Component<IProps, IState> {
   }
 
   async componentDidMount() {
-    console.log('componentDidMount');
     const { page, group } = this.state;
     const response: Array<IUserWord> = await getAllCurrentUserWords();
     const request: WordInfo[] = await getWords(group, page);
@@ -126,9 +125,9 @@ class Tutorial extends Component<IProps, IState> {
       <>
         <main>
           <Container maxWidth={false} sx={{ maxWidth: 1920 }}>
-            <Stack direction="row" justifyContent="center" alignItems="flex-start" spacing={2} sx={{ m: 2 }}>
+            <Grid container spacing={2} sx={{ mt: 1 }} justifyContent="center">
               {CATEGORIES.map((item) => (
-                <Card variant="outlined" sx={{ maxWidth: 345 }} key={item.id}>
+                <Grid item xs="auto" key={item.id}>
                   <Button
                     onClick={() => this.setNewGroup(item.id, item.color)}
                     variant={group === item.id ? 'contained' : 'outlined'}
@@ -137,9 +136,9 @@ class Tutorial extends Component<IProps, IState> {
                       {item.name}
                     </Typography>
                   </Button>
-                </Card>
+                </Grid>
               ))}
-            </Stack>
+            </Grid>
             {!!items?.length && group !== 6 && (
               <Pagination
                 count={MAX_PAGE}
@@ -149,9 +148,9 @@ class Tutorial extends Component<IProps, IState> {
                 sx={{ display: 'flex', justifyContent: 'center', m: 2 }}
               />
             )}
-            <Grid container spacing={2} columns={{ xs: 3, sm: 6, md: 12 }} sx={{ m: 1 }}>
+            <Grid container columnSpacing={1} rowSpacing={2} sx={{ ml: 0, mt: 1, mb: 1 }}>
               {items?.map((elem: WordInfo) => (
-                <Grid item xs={3} key={elem.id}>
+                <Grid item xl={3} lg={4} md={6} xs={12} key={elem.id}>
                   <CardTutorial
                     userItems={userItems}
                     isAuthenticated={isAuthenticated}
