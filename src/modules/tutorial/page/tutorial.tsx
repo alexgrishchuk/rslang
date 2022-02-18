@@ -48,15 +48,19 @@ class Tutorial extends Component<IProps, IState> {
   }
 
   async componentDidMount() {
+    console.log('componentDidMount');
     const { page, group } = this.state;
     const response: Array<IUserWord> = await getAllCurrentUserWords();
     const request: WordInfo[] = await getWords(group, page);
+
     if (group === 6) {
       this.setSixGroup();
     }
 
-    if (response) this.setState({ userItems: [...response] });
-    this.setState({ items: [...request] });
+    this.setState({
+      items: [...request],
+      userItems: [...response],
+    });
   }
 
   componentDidUpdate() {
@@ -145,7 +149,7 @@ class Tutorial extends Component<IProps, IState> {
                 sx={{ display: 'flex', justifyContent: 'center', m: 2 }}
               />
             )}
-            <Grid container spacing={1} columns={{ xs: 6, sm: 9, md: 12 }} sx={{ m: 2 }}>
+            <Grid container spacing={2} columns={{ xs: 3, sm: 6, md: 12 }} sx={{ m: 1 }}>
               {items?.map((elem: WordInfo) => (
                 <Grid item xs={3} key={elem.id}>
                   <CardTutorial
