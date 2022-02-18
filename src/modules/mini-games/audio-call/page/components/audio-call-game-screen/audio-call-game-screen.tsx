@@ -11,7 +11,7 @@ interface IAudioCallGameScreen {
   words: WordInfo[];
 }
 
-const LIMIT = 5;
+const LIMIT = 10;
 
 function AudioCallGameScreen(props: IAudioCallGameScreen) {
   const { wrongAnswers, words } = props;
@@ -77,7 +77,7 @@ function AudioCallGameScreen(props: IAudioCallGameScreen) {
           </div>
           <div className={classes.allGameButtons}>
             <Typography variant="h3" style={{ minHeight: 60 }}>
-              {statistic[count] ? words[count].word : ''}
+              {statistic[count] ? words[count].word : words[count].word}
             </Typography>
             <div>
               <Button className={classes.playSound} type="button">
