@@ -1,6 +1,6 @@
 import { Button, Typography } from '@mui/material';
 
-import React, { MouseEventHandler, useEffect, useState } from 'react';
+import React, { MouseEventHandler, useEffect, useRef, useState } from 'react';
 import { WordInfo } from '../../../../../../backend-requests/words-requests';
 import { IStatistic } from '../../../audio-call.types';
 import AudioCallGameFinishScreen from './audio-call-game-finish-screen';
@@ -9,16 +9,16 @@ import useStyles from './audio-call-game-screen.styles';
 interface IAudioCallGameScreen {
   wrongAnswers: string[];
   words: WordInfo[];
+  onFinishGame: () => void;
 }
 
 const LIMIT = 10;
 
 function AudioCallGameScreen(props: IAudioCallGameScreen) {
-  const { wrongAnswers, words } = props;
+  const { wrongAnswers, words, onFinishGame } = props;
   const [count, setCounter] = useState<number>(0);
   const [statistic, setStatistic] = useState<IStatistic[]>([]);
   const [answers, setAnswers] = useState<string[]>([]);
-
   const classes = useStyles();
 
   function shuffleWords(arr: string[]): string[] {
@@ -63,10 +63,17 @@ function AudioCallGameScreen(props: IAudioCallGameScreen) {
   }
 
   const isGameFinished = statistic.length === LIMIT;
+
+  const handlePlayButtonClick = () => {
+    (audioRef.current as unknown as HTMLAudioElement).play();
+  };
+
+  const audioRef = useRef(null);
   return (
     <>
       {!isGameFinished && (
         <>
+          <audio ref={audioRef} src={`./${words[count].audio}`} />
           <div className={classes.bullets}>
             {new Array(LIMIT).fill(0).map((word, index) => (
               <div key={word.word}>
@@ -77,10 +84,10 @@ function AudioCallGameScreen(props: IAudioCallGameScreen) {
           </div>
           <div className={classes.allGameButtons}>
             <Typography variant="h3" style={{ minHeight: 60 }}>
-              {statistic[count] ? words[count].word : words[count].word}
+              {statistic[count] ? words[count].word : ''}
             </Typography>
             <div>
-              <Button className={classes.playSound} type="button">
+              <Button className={classes.playSound} type="button" onClick={handlePlayButtonClick}>
                 Прослушать
               </Button>
             </div>
@@ -117,7 +124,16 @@ function AudioCallGameScreen(props: IAudioCallGameScreen) {
           </div>
         </>
       )}
-      {isGameFinished && <AudioCallGameFinishScreen statistic={statistic} />}
+      {isGameFinished && (
+        <AudioCallGameFinishScreen
+          statistic={statistic}
+          onFinishGame={onFinishGame}
+          clearStatistic={() => {
+            setStatistic([]);
+            setCounter(0);
+          }}
+        />
+      )}
     </>
   );
 }
