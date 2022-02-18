@@ -2,7 +2,7 @@ import { Button, Typography } from '@mui/material';
 
 import React, { MouseEventHandler, useEffect, useRef, useState } from 'react';
 import { WordInfo } from '../../../../../../backend-requests/words-requests';
-import { IStatistic } from '../../../audio-call.types';
+import { IStatistic, URL_PATH } from '../../../audio-call.types';
 import AudioCallGameFinishScreen from './audio-call-game-finish-screen';
 import useStyles from './audio-call-game-screen.styles';
 
@@ -73,7 +73,7 @@ function AudioCallGameScreen(props: IAudioCallGameScreen) {
     <>
       {!isGameFinished && (
         <>
-          <audio ref={audioRef} src={`./${words[count].audio}`} />
+          <audio ref={audioRef} src={`${URL_PATH}${words[count].audio}`} />
           <div className={classes.bullets}>
             {new Array(LIMIT).fill(0).map((word, index) => (
               <div key={word.word}>

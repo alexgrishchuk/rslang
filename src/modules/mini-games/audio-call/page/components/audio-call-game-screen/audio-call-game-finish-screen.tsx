@@ -1,7 +1,7 @@
 import React from 'react';
 import { Button, List, ListItem, Typography } from '@mui/material';
 import { makeStyles } from '@mui/styles';
-import { IStatistic } from '../../../audio-call.types';
+import { IStatistic, URL_PATH } from '../../../audio-call.types';
 
 const useStyles = makeStyles({
   container: {
@@ -46,7 +46,7 @@ const useStyles = makeStyles({
   },
   moveButtons2: {
     display: 'flex',
-    alignItems: 'center',
+    justifyContent: 'center',
   },
 });
 
@@ -94,7 +94,7 @@ function AudioCallGameFinishScreen(props: IAudioCallGameFinishScreen) {
   }
   const audio = statistic.map((stat) => {
     return {
-      audio: new Audio(`./${stat.word.audio}`),
+      audio: new Audio(`${URL_PATH}${stat.word.audio}`),
       id: stat.word.id,
     };
   });
