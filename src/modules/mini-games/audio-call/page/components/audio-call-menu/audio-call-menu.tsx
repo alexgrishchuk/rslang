@@ -5,7 +5,10 @@ import AudioCallMenuButton from './audio-call-menu-button/audio-call-menu-button
 import useCallMenuApi from './audio-call-menu-button/useCallMenuApi';
 
 const useStyles = makeStyles({
-  buttons: { display: 'flex', flexDirection: 'column', marginBottom: 12 },
+  buttons: {
+    display: 'flex',
+    flexDirection: 'column',
+  },
 });
 
 function AudioCallMenu() {
@@ -24,9 +27,7 @@ function AudioCallMenu() {
           <AudioCallMenuButton section={6} onClick={() => setSelected(6)} />
         </div>
       )}
-      {!!selected && words.length > 0 && (
-        <AudioCallGameScreen section={selected} wrongAnswers={wrongAnswers} words={words} />
-      )}
+      {!!selected && words.length > 0 && <AudioCallGameScreen wrongAnswers={wrongAnswers} words={words} />}
     </>
   );
 }
