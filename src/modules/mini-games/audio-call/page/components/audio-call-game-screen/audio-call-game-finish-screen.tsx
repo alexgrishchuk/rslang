@@ -78,7 +78,7 @@ function AudioCallGameFinishScreen(props: IAudioCallGameFinishScreen) {
     return l > 0;
   }
 
-  function getSeries() {
+  function getBestSeries() {
     const arr: number[] = [];
     let acc = 0;
     statistic.forEach((value) => {
@@ -101,6 +101,7 @@ function AudioCallGameFinishScreen(props: IAudioCallGameFinishScreen) {
 
   const classes = useStyles();
   const percent = Math.trunc((trueAnswers.length / length) * 100);
+  const bestSeries = getBestSeries();
   return (
     <>
       <div className={classes.container}>
@@ -158,7 +159,7 @@ function AudioCallGameFinishScreen(props: IAudioCallGameFinishScreen) {
               );
             })}
           </List>
-          <Typography variant="h5"> Самая длинная серия {getSeries()}</Typography>
+          <Typography variant="h5"> Самая длинная серия {bestSeries}</Typography>
         </div>
       </div>
       <div className={classes.moveButtons2}>

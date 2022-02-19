@@ -1,4 +1,5 @@
-import React from 'react';
+/* eslint-disable react-hooks/exhaustive-deps */
+import React, { useEffect } from 'react';
 import { Button, List, ListItem, Typography } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import { IStatistic, URL_PATH } from '../../../sprint.types';
@@ -78,7 +79,7 @@ function SprintGameFinishScreen(props: ISprintGameFinishScreen) {
     return l > 0;
   }
 
-  function getSeries() {
+  function getBestSeries() {
     const arr: number[] = [];
     let acc = 0;
     statistic.forEach((value) => {
@@ -99,8 +100,11 @@ function SprintGameFinishScreen(props: ISprintGameFinishScreen) {
     };
   });
 
+  const bestSeries = getBestSeries();
+
   const classes = useStyles();
   const percent = Math.trunc((trueAnswers.length / length) * 100);
+
   return (
     <>
       <div className={classes.container}>
@@ -158,7 +162,7 @@ function SprintGameFinishScreen(props: ISprintGameFinishScreen) {
               );
             })}
           </List>
-          <Typography variant="h5"> Самая длинная серия {getSeries()}</Typography>
+          <Typography variant="h5"> Самая длинная серия {bestSeries}</Typography>
         </div>
       </div>
       <div className={classes.moveButtons2}>
