@@ -40,14 +40,25 @@ const ENDPOINTS = {
   removeUserWord(userId: string, wordId: string) {
     return `${URL}/users/${userId}/words/${wordId}`;
   },
+
   getUserWord(userId: string, wordId: string) {
     return `${URL}/users/${userId}/words/${wordId}`;
   },
-  putUserWord(userId: string, wordId: string) {
+
+  updateUserWord(userId: string, wordId: string) {
     return `${URL}/users/${userId}/words/${wordId}`;
   },
+
   getAggregatedWords(userId: string) {
     return `${URL}/users/${userId}/aggregatedWords`;
+  },
+
+  getUserStatistics(userId: string) {
+    return `${URL}/users/${userId}/statistics`;
+  },
+
+  saveUserStatistics(userId: string) {
+    return `${URL}/users/${userId}/statistics`;
   },
 };
 

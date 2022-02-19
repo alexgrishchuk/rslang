@@ -5,6 +5,7 @@ import {
   UserTokens,
   saveTokensToStorage,
   getUserIdFromStorage,
+  removeUserInfoFromStorage,
 } from '../../storage/storage';
 
 export interface IRequestArgs {
@@ -14,6 +15,7 @@ export interface IRequestArgs {
 
 async function getNewTokens(): Promise<UserTokens | null> {
   const refreshToken = getRefreshTokenFromStorage();
+
   if (refreshToken === null) {
     return null;
   }
@@ -24,7 +26,7 @@ async function getNewTokens(): Promise<UserTokens | null> {
     return null;
   }
 
-  const response = await fetch(`${ENDPOINTS.getUser(userId)}`, {
+  const response = await fetch(`${ENDPOINTS.getNewTokens(userId)}`, {
     method: 'GET',
     headers: { Authorization: `Bearer ${refreshToken}` },
   });
@@ -36,6 +38,9 @@ async function updateTokens(): Promise<void> {
   const newTokens = await getNewTokens();
   if (newTokens !== null) {
     saveTokensToStorage(newTokens);
+  } else {
+    removeUserInfoFromStorage();
+    window.location.reload();
   }
 }
 
@@ -58,5 +63,6 @@ export async function request(info: RequestInfo, init: RequestInit): Promise<Res
   await updateTokens();
 
   token = getTokenFromStorage();
+
   return token !== null ? fetch(info, updatedInit) : null;
 }
