@@ -108,7 +108,7 @@ async function updateUserWord(
   return Boolean(response && response.ok);
 }
 
-export async function updateCurrentUserWord(
+async function updateCurrentUserWord(
   wordId: string,
   info: IPartialUserWordInfo | IUserWordInfo
 ): Promise<boolean> {
