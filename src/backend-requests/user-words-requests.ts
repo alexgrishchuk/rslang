@@ -108,10 +108,7 @@ async function updateUserWord(
   return Boolean(response && response.ok);
 }
 
-async function updateCurrentUserWord(
-  wordId: string,
-  info: IPartialUserWordInfo | IUserWordInfo
-): Promise<boolean> {
+async function updateCurrentUserWord(wordId: string, info: IPartialUserWordInfo | IUserWordInfo): Promise<boolean> {
   const userId = getUserIdFromStorage();
   return userId !== null ? updateUserWord(userId, wordId, info) : false;
 }
