@@ -28,3 +28,56 @@ main {
   filter: invert(97%) sepia(3%) saturate(253%) hue-rotate(274deg) brightness(122%) contrast(100%);
 }
 .footer__logo:hover { transform: scale(1.1) }
+
+.git-person:hover {
+  color: white;
+  text-decoration: none;
+  transform: scale(1.1)
+}
+
+.team__person {
+  transition: 1s;
+}
+
+.team__person:hover {
+  transform: scale(1.1);
+}
+
+.person__hover {
+  position: absolute;
+  color: #1976d2;
+  right: 0;
+  top: 0;
+}
+
+.person {
+  display: block;
+  position: relative;
+  background-color: #f2f8f9;
+  border-radius: 4px;
+  padding: 32px 24px;
+  margin: 12px;
+  text-decoration: none;
+  z-index: 0;
+  overflow: hidden;
+}
+
+.person::before {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  top: -16px;
+  right: -16px;
+  background: #1976d2;
+  height: 48px;
+  width: 48px;
+  border-radius: 32px;
+  transform: scale(1);
+  transform-origin: 50% 50%;
+  transition: transform 1s ease-out;
+}
+
+.person:hover::before {
+  transform: scale(50);
+  color: white;
+}
