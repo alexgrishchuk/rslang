@@ -17,7 +17,6 @@ export async function createUser(name: string, email: string, password: string):
     },
     body: JSON.stringify({ name, email, password }),
   });
-  console.log(response);
   return response;
 }
 

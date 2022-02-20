@@ -41,3 +41,7 @@ main {
   transform: scale(1.05);
   color: white;
 }
+
+.hard-card { background-color: #ffd4d4 }
+
+.easy-card { background-color: #e2ffe2 }
