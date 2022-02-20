@@ -4,7 +4,6 @@ interface IPeople {
   position: string;
   nameGithub: string;
   skills: Array<string>;
-  urlImage: string;
 }
 
 const PEOPLE: IPeople[] = [
@@ -14,7 +13,6 @@ const PEOPLE: IPeople[] = [
     position: 'Team Lead, developer',
     nameGithub: 'alexgrishchuk',
     skills: ['Главная страница', 'Авторизация', 'Прогресс изучения', 'cтраница "Cтатистика"', 'Изученные слова'],
-    urlImage: 'files/team/alex.png',
   },
   {
     id: 1,
@@ -22,7 +20,6 @@ const PEOPLE: IPeople[] = [
     position: 'Developer',
     nameGithub: 'LukashkinaMarina',
     skills: ['Мини-игра "Аудиовызов"', 'Мини-игра "Спринт"', 'Прогресс изучения', 'Изученные слова'],
-    urlImage: 'files/team/marina.png',
   },
   {
     id: 2,
@@ -30,7 +27,6 @@ const PEOPLE: IPeople[] = [
     position: 'Developer',
     nameGithub: 'barclays13',
     skills: ['Главная страница', 'Электронный учебник', 'Список слов', 'Страница "О команде""', 'Изученные слова'],
-    urlImage: 'files/team/sergey.jpg',
   },
 ];
 

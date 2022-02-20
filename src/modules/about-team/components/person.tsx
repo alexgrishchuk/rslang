@@ -9,20 +9,29 @@ import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import Link from '@mui/material/Link';
 import GitHubIcon from '@mui/icons-material/GitHub';
-import config from '../../../config.json';
 
 import { IPeople } from '../data/const';
+import MarinaImg from '../data/marina.png';
+import SergeyImg from '../data/sergey.png';
+import AlexImg from '../data/alex.png';
 
 function Person(props: { data: IPeople }): ReactElement {
   const {
-    data: { name, position, nameGithub, skills, urlImage },
+    data: { name, position, nameGithub, skills },
   } = props;
-  const URL = config.url;
 
   return (
     <Paper className="person" elevation={24} sx={{ display: 'flex' }}>
       <Box className="person__hover">.</Box>
-      <CardMedia component="img" sx={{ maxWidth: 300 }} image={`${URL}/${urlImage}`} alt={`${name} photo`} />
+      {nameGithub === 'barclays13' && (
+        <CardMedia component="img" sx={{ maxWidth: 300 }} image={SergeyImg} alt={`${name} photo`} />
+      )}
+      {nameGithub === 'LukashkinaMarina' && (
+        <CardMedia component="img" sx={{ maxWidth: 300 }} image={MarinaImg} alt={`${name} photo`} />
+      )}
+      {nameGithub === 'alexgrishchuk' && (
+        <CardMedia component="img" sx={{ maxWidth: 300 }} image={AlexImg} alt={`${name} photo`} />
+      )}
       <Box>
         <CardContent>
           <Grid container sx={{ display: 'flex' }} direction="column" justifyContent="space-around" alignItems="center">
