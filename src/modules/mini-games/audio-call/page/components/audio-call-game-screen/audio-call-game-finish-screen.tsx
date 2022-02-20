@@ -1,7 +1,8 @@
 import React from 'react';
 import { Button, List, ListItem, Typography } from '@mui/material';
 import { makeStyles } from '@mui/styles';
-import { IStatistic, URL_PATH } from '../../../audio-call.types';
+import { URL_PATH } from '../../../../../tutorial/data/const';
+import { IStatistic } from '../../../../mini-games.types';
 
 const useStyles = makeStyles({
   container: {

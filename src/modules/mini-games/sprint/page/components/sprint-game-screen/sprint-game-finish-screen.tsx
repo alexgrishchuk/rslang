@@ -2,7 +2,8 @@
 import React from 'react';
 import { Button, List, ListItem, Typography } from '@mui/material';
 import { makeStyles } from '@mui/styles';
-import { IStatistic, URL_PATH } from '../../../sprint.types';
+import { URL_PATH } from '../../../../../tutorial/data/const';
+import { IStatistic } from '../../../../mini-games.types';
 
 const useStyles = makeStyles({
   container: {
@@ -50,7 +51,6 @@ const useStyles = makeStyles({
     justifyContent: 'center',
   },
 });
-
 interface ISprintGameFinishScreen {
   statistic: IStatistic[];
   onFinishGame: () => void;

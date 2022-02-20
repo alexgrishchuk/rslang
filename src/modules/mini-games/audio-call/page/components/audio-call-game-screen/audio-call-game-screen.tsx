@@ -2,7 +2,8 @@ import { Button, Typography } from '@mui/material';
 
 import React, { MouseEventHandler, useEffect, useRef, useState } from 'react';
 import { WordInfo } from '../../../../../../backend-requests/words-requests';
-import { IStatistic, URL_PATH } from '../../../audio-call.types';
+import { URL_PATH } from '../../../../../tutorial/data/const';
+import { IStatistic } from '../../../../mini-games.types';
 import AudioCallGameFinishScreen from './audio-call-game-finish-screen';
 import useStyles from './audio-call-game-screen.styles';
 

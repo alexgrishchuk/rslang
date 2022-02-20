@@ -4,7 +4,8 @@ import { Button, Typography } from '@mui/material';
 
 import React, { MouseEventHandler, useEffect, useRef, useState } from 'react';
 import { WordInfo } from '../../../../../../backend-requests/words-requests';
-import { IStatistic, URL_PATH } from '../../../race.types';
+import { URL_PATH } from '../../../../../tutorial/data/const';
+import { IStatistic } from '../../../../mini-games.types';
 import RaceGameFinishScreen from './race-game-finish-screen';
 import useStyles from './race-game-screen.styles';
 import useTimer from './useTimer';
