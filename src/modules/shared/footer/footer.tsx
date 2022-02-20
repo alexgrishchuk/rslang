@@ -31,6 +31,15 @@ function Footer() {
             >
               Sergey Zubarev | @barclays13
             </Link>
+            <Link
+              className="footer__user-link"
+              href="https://github.com/LukashkinaMarina"
+              color="inherit"
+              target="_blank"
+              underline="hover"
+            >
+              Marina Lukashkina | @LukashkinaMarina
+            </Link>
           </Stack>
           <Link href="https://rs.school/index.html" target="_blank">
             <img className="footer__logo" src={RSSlogo} alt="RSS Logo" />
