@@ -1,11 +1,3 @@
-import { WordInfo } from '../../../backend-requests/words-requests';
-
-export interface IUserWord {
-  difficulty: string;
-  id: string;
-  optional?: WordInfo;
-  wordId: string;
-}
 interface ICategories {
   id: number;
   name: string;
@@ -15,7 +7,7 @@ interface ICategories {
 const URL_PATH = 'http://localhost:8000/';
 
 const CATEGORIES: ICategories[] = [
-  { id: 0, name: 'Раздел 1', color: '#fdd835' },
+  { id: 0, name: 'Раздел 1', color: '#df8ae5' },
   { id: 1, name: 'Раздел 2', color: '#ffc107' },
   { id: 2, name: 'Раздел 3', color: '#ff9800' },
   { id: 3, name: 'Раздел 4', color: '#f57c00' },

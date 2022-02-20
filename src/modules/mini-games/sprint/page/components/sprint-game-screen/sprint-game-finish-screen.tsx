@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useEffect } from 'react';
+import React from 'react';
 import { Button, List, ListItem, Typography } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import { IStatistic, URL_PATH } from '../../../sprint.types';
