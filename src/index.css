@@ -32,14 +32,6 @@ main {
   transform: scale(1.1)
 }
 
-.hard-card {
-  background-color: #ffd4d4
-}
-
-.easy-card {
-  background-color: #e2ffe2
-}
-
 .type-learning {
   background-color: #1976d2;
   transition: 1s;
@@ -50,4 +42,12 @@ main {
   background-color: #1976d2;
   transform: scale(1.05);
   color: white;
+}
+
+.hard-card {
+  background-color: #ffd4d4
+}
+
+.easy-card {
+  background-color: #e2ffe2
 }
