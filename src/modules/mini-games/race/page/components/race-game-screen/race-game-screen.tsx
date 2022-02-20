@@ -4,12 +4,12 @@ import { Button, Typography } from '@mui/material';
 
 import React, { MouseEventHandler, useEffect, useRef, useState } from 'react';
 import { WordInfo } from '../../../../../../backend-requests/words-requests';
-import { IStatistic, URL_PATH } from '../../../sprint.types';
-import SprintGameFinishScreen from './sprint-game-finish-screen';
-import useStyles from './sprint-game-screen.styles';
+import { IStatistic, URL_PATH } from '../../../race.types';
+import RaceGameFinishScreen from './race-game-finish-screen';
+import useStyles from './race-game-screen.styles';
 import useTimer from './useTimer';
 
-interface ISprintGameScreen {
+interface IRaceGameScreen {
   wrongAnswers: string[];
   words: WordInfo[];
   onFinishGame: () => void;
@@ -17,24 +17,24 @@ interface ISprintGameScreen {
 
 const LIMIT = 10;
 
-function SprintGameScreen(props: ISprintGameScreen) {
+function RaceGameScreen(props: IRaceGameScreen) {
   const { wrongAnswers, words, onFinishGame } = props;
   const [count, setCounter] = useState<number>(0);
   const [statistic, setStatistic] = useState<IStatistic[]>([]);
-  const [question, setQuestion] = useState<string>('');
-  const { timer, resetTimer } = useTimer(30);
+  const [answers, setAnswers] = useState<string[]>([]);
+  const { timer, resetTimer } = useTimer();
   const classes = useStyles();
-
-  function getAnswers(counter: number) {
-    return [words[counter].wordTranslate, wrongAnswers[count]];
+  function shuffleWords(arr: string[]): string[] {
+    return arr.sort(() => (Math.random() > 0.5 ? -1 : 1));
   }
 
-  const setQuestionForView = (arr: string[]) => setQuestion(arr[Math.trunc(Math.random() * 1.99)]);
+  function getAnswers(counter: number) {
+    return shuffleWords([...shuffleWords(wrongAnswers).slice(wrongAnswers.length - 4), words[counter].wordTranslate]);
+  }
 
   function nextHandler() {
     setCounter(count + 1);
-    const newAnswers = getAnswers(count + 1);
-    setQuestionForView(newAnswers);
+    setAnswers(getAnswers(count + 1));
     resetTimer();
   }
 
@@ -43,16 +43,11 @@ function SprintGameScreen(props: ISprintGameScreen) {
     nextHandler();
   }
 
-  function answerHandler(value: boolean) {
-    const result =
-      (question === words[count].wordTranslate) === value || (question !== words[count].wordTranslate) !== value;
+  function answerHandler(event: MouseEvent) {
+    const selectedAnswer = (event?.target as HTMLButtonElement).textContent || '';
     setStatistic([
       ...statistic,
-      {
-        word: words[count],
-        answer: result ? words[count].wordTranslate : question,
-        result,
-      },
+      { word: words[count], answer: selectedAnswer, result: words[count].wordTranslate === selectedAnswer },
     ]);
     nextHandler();
   }
@@ -63,18 +58,29 @@ function SprintGameScreen(props: ISprintGameScreen) {
     }
   }, [timer]);
 
+  useEffect(() => {
+    setAnswers(getAnswers(count));
+  }, [wrongAnswers]);
+
+  function getBorderColor(answer: string) {
+    if (!statistic[count]) return '';
+    const rightAnswer = statistic[count].word.wordTranslate;
+    if (statistic[count].answer !== answer) {
+      if (rightAnswer === answer) {
+        return '2px solid green';
+      }
+      return '';
+    }
+    return rightAnswer !== answer ? '2px solid red' : '2px solid green';
+  }
+
+  const isGameFinished = statistic.length === LIMIT;
+
   const audioRef = useRef(null);
 
   useEffect(() => {
     (audioRef.current as unknown as HTMLAudioElement)?.play();
-  }, [count]);
-
-  useEffect(() => {
-    const newAnswers = getAnswers(count + 1);
-    setQuestionForView(newAnswers);
-  }, [wrongAnswers]);
-
-  const isGameFinished = statistic.length === LIMIT;
+  }, [answers]);
 
   return (
     <>
@@ -94,15 +100,23 @@ function SprintGameScreen(props: ISprintGameScreen) {
           </div>
           <div className={classes.allGameButtons}>
             <Typography variant="h3" style={{ minHeight: 60 }}>
-              {question}
+              {words[count].word}
             </Typography>
             <div>
-              <Button className={classes.playButton} type="button" onClick={() => answerHandler(true)}>
-                Да
-              </Button>
-              <Button className={classes.playButton} type="button" onClick={() => answerHandler(false)}>
-                Нет
-              </Button>
+              {answers.map((answer) => (
+                <Button
+                  className={classes.playButton}
+                  style={{ border: getBorderColor(answer) }}
+                  key={`key_${answer}`}
+                  type="button"
+                  onClick={answerHandler as unknown as MouseEventHandler<HTMLButtonElement>}
+                  disabled={Boolean(statistic[count])}
+                >
+                  {answer}
+                </Button>
+              ))}
+            </div>
+            <div>
               <Button
                 className={classes.playButton}
                 type="button"
@@ -116,7 +130,7 @@ function SprintGameScreen(props: ISprintGameScreen) {
         </>
       )}
       {isGameFinished && (
-        <SprintGameFinishScreen
+        <RaceGameFinishScreen
           statistic={statistic}
           onFinishGame={onFinishGame}
           clearStatistic={() => {
@@ -129,4 +143,4 @@ function SprintGameScreen(props: ISprintGameScreen) {
     </>
   );
 }
-export default SprintGameScreen;
+export default RaceGameScreen;

@@ -9,6 +9,7 @@ import LibraryBooksOutlinedIcon from '@mui/icons-material/LibraryBooksOutlined';
 import SchoolOutlinedIcon from '@mui/icons-material/SchoolOutlined';
 import HearingOutlinedIcon from '@mui/icons-material/HearingOutlined';
 import Forward30OutlinedIcon from '@mui/icons-material/Forward30Outlined';
+import DownhillSkiingIcon from '@mui/icons-material/DownhillSkiing';
 
 export default function TypeLearning() {
   return (
@@ -68,6 +69,20 @@ export default function TypeLearning() {
               угадывать, верный перевод предложен к английскому слову или нет.
             </Typography>
             <Forward30OutlinedIcon sx={{ fontSize: 64 }} />
+          </Stack>
+        </Paper>
+      </Grid>
+      <Grid item xs={6} p={4}>
+        <Paper className="type-learning" elevation={3}>
+          <Stack alignItems="center">
+            <Typography variant="h3" m={2}>
+              Мини-игра &quot;Гонка&quot;
+            </Typography>
+            <Typography variant="subtitle2" width={500}>
+              Игра позволяет развить навыки восприятия речи за очень ограниченное время. Пользователь только слышит и
+              видит слово и видит 5 вариантов его перевода. Необходимо выбрать правильный перевод слова за 10 секунд.
+            </Typography>
+            <DownhillSkiingIcon sx={{ fontSize: 64 }} />
           </Stack>
         </Paper>
       </Grid>

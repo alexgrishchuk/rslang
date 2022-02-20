@@ -3,6 +3,7 @@ const PAGES = {
   TUTORIAL: { title: 'Учебник', path: 'tutorial' },
   AUDIO_CALL: { title: 'Аудиовызов', path: 'audio-call' },
   SPRINT: { title: 'Спринт', path: 'sprint' },
+  RACE: { title: 'Гонка', path: 'race' },
   STATISTICS: { title: 'Статистика', path: 'statistics' },
   ABOUT_TEAM: { title: 'О команде', path: 'about-team' },
 };
