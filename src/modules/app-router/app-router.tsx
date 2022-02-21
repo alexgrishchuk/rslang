@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route, useNavigate } from 'react-router-dom';
 import ResponsiveAppBar from '../main-menu/main-menu';
 import PAGES from '../shared/data/pages';
 import { removeUserInfoFromStorage, isUserAuthenticated } from '../../storage/storage';
@@ -14,6 +14,8 @@ import Race from '../mini-games/race/page/race';
 
 function AppRouter() {
   const [isAuthenticated, setAuthenticated] = useState(isUserAuthenticated());
+  const navigate = useNavigate();
+
   const LogInUser = () => {
     setAuthenticated(true);
   };
@@ -21,6 +23,7 @@ function AppRouter() {
   const LogOutUser = () => {
     setAuthenticated(false);
     removeUserInfoFromStorage();
+    navigate(PAGES.MAIN.path);
   };
 
   return (
@@ -32,7 +35,7 @@ function AppRouter() {
         <Route path={PAGES.AUDIO_CALL.path} element={<AudioCall />} />
         <Route path={PAGES.SPRINT.path} element={<Sprint />} />
         <Route path={PAGES.RACE.path} element={<Race />} />
-        <Route path={PAGES.STATISTICS.path} element={<Statistics />} />
+        <Route path={PAGES.STATISTICS.path} element={<Statistics isAuthenticated={isAuthenticated} />} />
         <Route path={PAGES.ABOUT_TEAM.path} element={<AboutTeam />} />
       </Routes>
     </div>

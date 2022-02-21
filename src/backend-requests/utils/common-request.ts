@@ -1,3 +1,4 @@
+import PAGES from '../../modules/shared/data/pages';
 import ENDPOINTS from '../data/endpoints';
 import {
   getTokenFromStorage,
@@ -40,7 +41,7 @@ async function updateTokens(): Promise<void> {
     saveTokensToStorage(newTokens);
   } else {
     removeUserInfoFromStorage();
-    window.location.reload();
+    window.location.pathname = PAGES.MAIN.path;
   }
 }
 
