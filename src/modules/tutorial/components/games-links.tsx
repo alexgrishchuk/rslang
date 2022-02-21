@@ -1,6 +1,5 @@
 import React, { ReactElement } from 'react';
 
-import Divider from '@mui/material/Divider';
 import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
 import { useNavigate } from 'react-router-dom';
@@ -15,13 +14,7 @@ function GamesLinks(props: { isLearnedPage: boolean }): ReactElement {
   };
 
   return (
-    <Stack
-      direction="row"
-      justifyContent="space-around"
-      alignItems="center"
-      spacing={4}
-      divider={<Divider orientation="vertical" flexItem />}
-    >
+    <Stack direction={{ xs: 'column', sm: 'row' }} justifyContent="space-around" alignItems="center" spacing={4}>
       <Button
         variant="outlined"
         disableElevation
@@ -31,7 +24,7 @@ function GamesLinks(props: { isLearnedPage: boolean }): ReactElement {
         }}
         sx={{ m: 4, width: '50%', height: 100 }}
       >
-        <AudiotrackTwoToneIcon sx={{ mr: 5, fontSize: 40 }} />
+        <AudiotrackTwoToneIcon sx={{ m: 2, fontSize: 40 }} />
         Мини-игра Аудивызов
       </Button>
       <Button
@@ -43,7 +36,7 @@ function GamesLinks(props: { isLearnedPage: boolean }): ReactElement {
         }}
         sx={{ width: '50%', height: 100 }}
       >
-        <MobiledataOffTwoToneIcon sx={{ mr: 5, fontSize: 40 }} />
+        <MobiledataOffTwoToneIcon sx={{ m: 2, fontSize: 40 }} />
         Мини-игра Спринт
       </Button>
     </Stack>

@@ -15,7 +15,7 @@ import AudioBtn from './audio';
 import { WordInfo } from '../../../backend-requests/words-requests';
 import {
   IUserWordInfoWithId,
-  setWordToEasy,
+  setWordToLearned,
   setWordToHard,
   IUserWordInfo,
 } from '../../../backend-requests/user-words-requests';
@@ -92,7 +92,7 @@ class CardTutorial extends Component<IProps, IState> {
     }
 
     if (difficultWord && !learnedWord) {
-      setWordToEasy(id);
+      setWordToLearned(id);
       this.setState({ learnedWord: true });
     }
 
@@ -106,7 +106,7 @@ class CardTutorial extends Component<IProps, IState> {
     } = this.props;
 
     if (!learnedWord && !difficultWord) {
-      setWordToEasy(id);
+      setWordToLearned(id);
     }
 
     if (learnedWord && !difficultWord) {
@@ -115,7 +115,7 @@ class CardTutorial extends Component<IProps, IState> {
     }
 
     if (!learnedWord && difficultWord) {
-      setWordToEasy(id);
+      setWordToLearned(id);
       this.setState({ difficultWord: false });
     }
 

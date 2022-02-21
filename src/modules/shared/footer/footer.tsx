@@ -10,9 +10,9 @@ function Footer() {
   return (
     <footer className="footer">
       <Container maxWidth={false} sx={{ maxWidth: 1920 }}>
-        <Stack direction="row" justifyContent="space-around" alignItems="center" spacing={1}>
+        <Stack justifyContent="space-around" direction={{ xs: 'column', sm: 'row' }} alignItems="center" spacing={1}>
           <Typography>2022</Typography>
-          <Stack direction="row" justifyContent="space-around" alignItems="center" spacing={3}>
+          <Stack direction={{ xs: 'column', lg: 'row' }} justifyContent="space-around" alignItems="center" spacing={2}>
             <Link
               className="footer__user-link"
               href="https://github.com/alexgrishchuk"
