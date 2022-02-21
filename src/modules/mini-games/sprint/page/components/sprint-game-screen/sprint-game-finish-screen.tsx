@@ -1,9 +1,10 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Button, List, ListItem, Typography } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import { URL_PATH } from '../../../../../tutorial/data/const';
 import { IStatistic } from '../../../../mini-games.types';
+import saveGameStatistics from '../../../../../../backend-requests/game-statistics';
 
 const useStyles = makeStyles({
   container: {
@@ -104,6 +105,10 @@ function SprintGameFinishScreen(props: ISprintGameFinishScreen) {
 
   const classes = useStyles();
   const percent = Math.trunc((trueAnswers.length / length) * 100);
+
+  useEffect(() => {
+    saveGameStatistics('sprint', bestSeries, statistic);
+  }, [bestSeries, statistic]);
 
   return (
     <>
