@@ -14,13 +14,13 @@ import DownhillSkiingIcon from '@mui/icons-material/DownhillSkiing';
 export default function TypeLearning() {
   return (
     <Grid container rowSpacing={3} columnSpacing={{ xs: 3, sm: 2, md: 3 }} mt={8}>
-      <Grid item xs={6} p={4}>
+      <Grid item xs={12} lg={6} p={1}>
         <Paper className="type-learning" elevation={3}>
           <Stack alignItems="center">
-            <Typography variant="h3" m={2}>
+            <Typography variant="h3" sx={{ fontSize: { xs: 30, md: 50 } }} m={2}>
               Учебник
             </Typography>
-            <Typography variant="subtitle2" width={500}>
+            <Typography variant="subtitle2" p={3}>
               В каждом разделе 30 страниц по 20 слов. Представлены перевод слова, тематическое изображение, а также
               произношение как слова отдельно, так и в составе словосочетания.
             </Typography>
@@ -28,43 +28,29 @@ export default function TypeLearning() {
           </Stack>
         </Paper>
       </Grid>
-      <Grid item xs={6} p={4}>
+      <Grid item xs={12} lg={6} p={1}>
         <Paper className="type-learning" elevation={3}>
           <Stack alignItems="center">
-            <Typography variant="h3" m={2}>
+            <Typography variant="h3" sx={{ fontSize: { xs: 30, md: 50 } }} m={2}>
               Словарь
             </Typography>
-            <Typography variant="subtitle2" width={500}>
+            <Typography variant="subtitle2">
               В данный словарь пользователь добавляет сложные слова. После изучения слово удаляется из словаря.
             </Typography>
-            <Typography variant="subtitle2" width={500}>
+            <Typography variant="subtitle2" p={3}>
               Для авторизованных пользователей!
             </Typography>
             <SchoolOutlinedIcon sx={{ fontSize: 64 }} />
           </Stack>
         </Paper>
       </Grid>
-      <Grid item xs={6} p={4}>
+      <Grid item xs={12} lg={6} p={1}>
         <Paper className="type-learning" elevation={3}>
           <Stack alignItems="center">
-            <Typography variant="h3" m={2}>
-              Мини-игра &quot;Аудиовызов&quot;
-            </Typography>
-            <Typography variant="subtitle2" width={500}>
-              Аудирование развивает навыки восприятия речи. Пользователь только слышит слово и видит 5 вариантов его
-              перевода. Необходимо выбрать правильный перевод озвученного слова.
-            </Typography>
-            <HearingOutlinedIcon sx={{ fontSize: 64 }} />
-          </Stack>
-        </Paper>
-      </Grid>
-      <Grid item xs={6} p={4}>
-        <Paper className="type-learning" elevation={3}>
-          <Stack alignItems="center">
-            <Typography variant="h3" m={2}>
+            <Typography variant="h3" sx={{ fontSize: { xs: 30, md: 50 } }} m={2}>
               Мини-игра &quot;Спринт&quot;
             </Typography>
-            <Typography variant="subtitle2" width={500}>
+            <Typography variant="subtitle2" p={3}>
               Пользователю будет предлагаться слово на английском языке и его перевод. В течение 30 секунд нужно
               угадывать, верный перевод предложен к английскому слову или нет.
             </Typography>
@@ -72,17 +58,31 @@ export default function TypeLearning() {
           </Stack>
         </Paper>
       </Grid>
-      <Grid item xs={6} p={4}>
+      <Grid item xs={12} lg={6} p={1}>
         <Paper className="type-learning" elevation={3}>
           <Stack alignItems="center">
-            <Typography variant="h3" m={2}>
+            <Typography variant="h3" sx={{ fontSize: { xs: 30, md: 50 } }} m={2}>
               Мини-игра &quot;Гонка&quot;
             </Typography>
-            <Typography variant="subtitle2" width={500}>
+            <Typography variant="subtitle2" p={3}>
               Игра позволяет развить навыки восприятия речи за очень ограниченное время. Пользователь только слышит и
               видит слово и видит 5 вариантов его перевода. Необходимо выбрать правильный перевод слова за 10 секунд.
             </Typography>
             <DownhillSkiingIcon sx={{ fontSize: 64 }} />
+          </Stack>
+        </Paper>
+      </Grid>
+      <Grid item xs={12} p={1}>
+        <Paper className="type-learning" elevation={3}>
+          <Stack alignItems="center">
+            <Typography variant="h3" sx={{ fontSize: { xs: 30, md: 50 } }} m={2}>
+              Мини-игра &quot;Аудиовызов&quot;
+            </Typography>
+            <Typography variant="subtitle2" p={3}>
+              Аудирование развивает навыки восприятия речи. Пользователь только слышит слово и видит 5 вариантов его
+              перевода. Необходимо выбрать правильный перевод озвученного слова.
+            </Typography>
+            <HearingOutlinedIcon sx={{ fontSize: 64 }} />
           </Stack>
         </Paper>
       </Grid>
