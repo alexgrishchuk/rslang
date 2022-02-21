@@ -72,8 +72,10 @@ function SprintGameScreen(props: ISprintGameScreen) {
   };
 
   useEffect(() => {
-    (ref?.current as unknown as HTMLInputElement).click();
-  }, [count]);
+    if (ref?.current) {
+      (ref?.current as unknown as HTMLInputElement).click();
+    }
+  }, [question]);
 
   useEffect(() => {
     const newAnswers = getAnswers(count + 1);
@@ -81,6 +83,26 @@ function SprintGameScreen(props: ISprintGameScreen) {
   }, [wrongAnswers]);
 
   const isGameFinished = statistic.length === LIMIT;
+  const refY = useRef(null);
+  const refN = useRef(null);
+
+  const logKey = (key: KeyboardEvent): void => {
+    switch (key.code) {
+      case 'KeyY':
+        (refY.current as unknown as HTMLImageElement).click();
+        break;
+      case 'KeyL':
+        (refY.current as unknown as HTMLImageElement).click();
+        break;
+      default:
+        (refN.current as unknown as HTMLImageElement).click();
+    }
+  };
+
+  useEffect(() => {
+    document.addEventListener('keydown', logKey);
+    return () => document.removeEventListener('keydown', logKey);
+  }, []);
 
   return (
     <>
@@ -105,10 +127,10 @@ function SprintGameScreen(props: ISprintGameScreen) {
               {question}
             </Typography>
             <div>
-              <Button className={classes.playButton} type="button" onClick={() => answerHandler(true)}>
+              <Button ref={refY} className={classes.playButton} type="button" onClick={() => answerHandler(true)}>
                 Да
               </Button>
-              <Button className={classes.playButton} type="button" onClick={() => answerHandler(false)}>
+              <Button ref={refN} className={classes.playButton} type="button" onClick={() => answerHandler(false)}>
                 Нет
               </Button>
               <Button

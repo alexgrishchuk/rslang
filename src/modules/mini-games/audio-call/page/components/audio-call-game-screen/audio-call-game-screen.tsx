@@ -69,6 +69,48 @@ function AudioCallGameScreen(props: IAudioCallGameScreen) {
     (audioRef.current as unknown as HTMLAudioElement).play();
   };
 
+  const ref1 = useRef(null);
+  const ref2 = useRef(null);
+  const ref3 = useRef(null);
+  const ref4 = useRef(null);
+  const ref5 = useRef(null);
+  const refNk = useRef(null);
+  const refNext = useRef(null);
+  const refPlay = useRef(null);
+
+  const logKey = (key: KeyboardEvent): void => {
+    switch (key.code) {
+      case 'Digit1':
+        (ref1.current as unknown as HTMLImageElement).click();
+        break;
+      case 'Digit2':
+        (ref2.current as unknown as HTMLImageElement).click();
+        break;
+      case 'Digit3':
+        (ref3.current as unknown as HTMLImageElement).click();
+        break;
+      case 'Digit4':
+        (ref4.current as unknown as HTMLImageElement).click();
+        break;
+      case 'Digit5':
+        (ref5.current as unknown as HTMLImageElement).click();
+        break;
+      case 'Space':
+        (refNext.current as unknown as HTMLImageElement).click();
+        break;
+      case 'KeyP':
+        (refPlay.current as unknown as HTMLImageElement).click();
+        break;
+      default:
+        (refNk.current as unknown as HTMLImageElement).click();
+    }
+  };
+
+  useEffect(() => {
+    document.addEventListener('keydown', logKey);
+    return () => document.removeEventListener('keydown', logKey);
+  }, []);
+
   const audioRef = useRef(null);
   return (
     <>
@@ -88,32 +130,71 @@ function AudioCallGameScreen(props: IAudioCallGameScreen) {
               {statistic[count] ? words[count].word : ''}
             </Typography>
             <div>
-              <Button className={classes.playSound} type="button" onClick={handlePlayButtonClick}>
+              <Button ref={refPlay} className={classes.playSound} type="button" onClick={handlePlayButtonClick}>
                 Прослушать
               </Button>
             </div>
             <div>
-              {answers.map((answer) => (
-                <Button
-                  className={classes.playButton}
-                  style={{ border: getBorderColor(answer) }}
-                  key={`key_${answer}`}
-                  type="button"
-                  onClick={answerHandler as unknown as MouseEventHandler<HTMLButtonElement>}
-                  disabled={Boolean(statistic[count])}
-                >
-                  {answer}
-                </Button>
-              ))}
+              <Button
+                ref={ref1}
+                className={classes.playButton}
+                style={{ border: getBorderColor(answers[0]) }}
+                type="button"
+                onClick={answerHandler as unknown as MouseEventHandler<HTMLButtonElement>}
+                disabled={Boolean(statistic[count])}
+              >
+                {answers[0]}
+              </Button>
+              <Button
+                ref={ref2}
+                className={classes.playButton}
+                style={{ border: getBorderColor(answers[1]) }}
+                type="button"
+                onClick={answerHandler as unknown as MouseEventHandler<HTMLButtonElement>}
+                disabled={Boolean(statistic[count])}
+              >
+                {answers[1]}
+              </Button>
+              <Button
+                ref={ref3}
+                className={classes.playButton}
+                style={{ border: getBorderColor(answers[2]) }}
+                type="button"
+                onClick={answerHandler as unknown as MouseEventHandler<HTMLButtonElement>}
+                disabled={Boolean(statistic[count])}
+              >
+                {answers[2]}
+              </Button>
+              <Button
+                ref={ref4}
+                className={classes.playButton}
+                style={{ border: getBorderColor(answers[3]) }}
+                type="button"
+                onClick={answerHandler as unknown as MouseEventHandler<HTMLButtonElement>}
+                disabled={Boolean(statistic[count])}
+              >
+                {answers[3]}
+              </Button>
+              <Button
+                ref={ref5}
+                className={classes.playButton}
+                style={{ border: getBorderColor(answers[4]) }}
+                type="button"
+                onClick={answerHandler as unknown as MouseEventHandler<HTMLButtonElement>}
+                disabled={Boolean(statistic[count])}
+              >
+                {answers[4]}
+              </Button>
             </div>
             <div>
               {!statistic[count] && (
-                <Button className={classes.playButton} type="button" onClick={notKnowHandler}>
+                <Button ref={refNk} className={classes.playButton} type="button" onClick={notKnowHandler}>
                   Не знаю
                 </Button>
               )}
               {statistic[count] && (
                 <Button
+                  ref={refNext}
                   className={classes.playButton}
                   type="button"
                   onClick={nextHandler as unknown as MouseEventHandler<HTMLButtonElement>}
