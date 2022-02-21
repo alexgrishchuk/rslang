@@ -6,9 +6,9 @@ import { useNavigate } from 'react-router-dom';
 import AudiotrackTwoToneIcon from '@mui/icons-material/AudiotrackTwoTone';
 import MobiledataOffTwoToneIcon from '@mui/icons-material/MobiledataOffTwoTone';
 
-function GamesLinks(props: { isLearnedPage: boolean }): ReactElement {
+function GamesLinks(props: { isLearnedPage: boolean; group: number }): ReactElement {
   const navigate = useNavigate();
-  const { isLearnedPage } = props;
+  const { isLearnedPage, group } = props;
   const linkTo = (path: string) => {
     navigate(path);
   };
@@ -20,9 +20,9 @@ function GamesLinks(props: { isLearnedPage: boolean }): ReactElement {
         disableElevation
         disabled={isLearnedPage}
         onClick={() => {
-          linkTo(`/audio-call`);
+          linkTo(`/audio-call/${group + 1}`);
         }}
-        sx={{ m: 4, width: '50%', height: 100 }}
+        sx={{ m: 4, width: '30%', height: 100 }}
       >
         <AudiotrackTwoToneIcon sx={{ m: 2, fontSize: 40 }} />
         Мини-игра Аудивызов
@@ -32,12 +32,24 @@ function GamesLinks(props: { isLearnedPage: boolean }): ReactElement {
         disabled={isLearnedPage}
         disableElevation
         onClick={() => {
-          linkTo(`/sprint`);
+          linkTo(`/sprint/${group + 1}`);
         }}
-        sx={{ width: '50%', height: 100 }}
+        sx={{ width: '30%', height: 100 }}
       >
         <MobiledataOffTwoToneIcon sx={{ m: 2, fontSize: 40 }} />
         Мини-игра Спринт
+      </Button>
+      <Button
+        variant="outlined"
+        disabled={isLearnedPage}
+        disableElevation
+        onClick={() => {
+          linkTo(`/race/${group + 1}`);
+        }}
+        sx={{ width: '30%', height: 100 }}
+      >
+        <MobiledataOffTwoToneIcon sx={{ m: 2, fontSize: 40 }} />
+        Мини-игра Гонка
       </Button>
     </Stack>
   );

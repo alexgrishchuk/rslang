@@ -10,7 +10,7 @@ function StartLearning() {
   const steps = ['Найти наше приложение', 'Зарегистрироваться', 'Начать обучение и отслеживать свои успехи!'];
 
   return (
-    <Box sx={{ width: '100%' }}>
+    <Box sx={{ width: '100%' }} mt={10} mb={10}>
       <Typography variant="h4" gutterBottom component="div" align="center" mb={4}>
         Как начать обучение?
       </Typography>
