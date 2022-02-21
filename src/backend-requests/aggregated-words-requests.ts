@@ -49,8 +49,6 @@ export async function isAllWordsOnPageLearned(
     wordsPerPage,
     `{"userWord.optional.isLearned":true}`
   );
-
-  console.log('w', wordsArray);
-
+  
   return !!wordsArray && !!wordsArray[0].totalCount.length && wordsArray[0].totalCount[0].count >= wordsPerPage;
 }
