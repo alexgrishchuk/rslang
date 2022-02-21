@@ -2,7 +2,7 @@ import ENDPOINTS from './data/endpoints';
 import { request } from './utils/common-request';
 import { getUserIdFromStorage } from '../storage/storage';
 
-interface IStatForDay {
+export interface IStatForDay {
   date: string;
   newWordsCount: number;
   learnedWordsCount: number;
@@ -110,6 +110,7 @@ async function updateLongTermStatistics(currentStatistics: IUserStatistics): Pro
   longTermArray.push(statForDay);
   optional.longTerm = JSON.stringify(longTermArray);
   optional.current = createDefaultStatistics().optional.current;
+  optional.current.timestamp = Date.now();
 
   return saveCurrentUserStatistics({ learnedWords, optional });
 }

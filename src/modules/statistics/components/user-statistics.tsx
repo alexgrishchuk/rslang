@@ -8,6 +8,7 @@ import Typography from '@mui/material/Typography';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import GameStatistics from './game-statistics';
 import WordsStatistics from './words-statistics';
+import LongTermStatistics from './long-term-statistics';
 import AppContainer from '../../shared/app-container/app-container';
 
 import {
@@ -61,7 +62,7 @@ export default function UserStatistics() {
   return (
     <Box>
       <Paper elevation={3}>
-        <Accordion>
+        <Accordion defaultExpanded>
           <AppContainer>
             <AccordionSummary
               sx={{ padding: 0 }}
@@ -74,32 +75,49 @@ export default function UserStatistics() {
           </AppContainer>
           <AccordionDetails sx={{ padding: 0, mb: 2 }}>
             <AppContainer>
-              <div>
-                <GameStatistics
-                  name="Спринт"
-                  newWordsCount={sprint.newWordsCount}
-                  rightAnswersPercent={getGameRightAnswersPercent(sprint)}
-                  longestRightSequence={sprint.longestRightSequence}
-                />
-                <GameStatistics
-                  name="Аудиовызов"
-                  newWordsCount={audioCall.newWordsCount}
-                  rightAnswersPercent={getGameRightAnswersPercent(audioCall)}
-                  longestRightSequence={audioCall.longestRightSequence}
-                />
-                <GameStatistics
-                  name="Гонка"
-                  newWordsCount={race.newWordsCount}
-                  rightAnswersPercent={getGameRightAnswersPercent(race)}
-                  longestRightSequence={race.longestRightSequence}
-                />
-              </div>
+              <GameStatistics
+                name="Спринт"
+                newWordsCount={sprint.newWordsCount}
+                rightAnswersPercent={getGameRightAnswersPercent(sprint)}
+                longestRightSequence={sprint.longestRightSequence}
+              />
+              <GameStatistics
+                name="Аудиовызов"
+                newWordsCount={audioCall.newWordsCount}
+                rightAnswersPercent={getGameRightAnswersPercent(audioCall)}
+                longestRightSequence={audioCall.longestRightSequence}
+              />
+              <GameStatistics
+                name="Гонка"
+                newWordsCount={race.newWordsCount}
+                rightAnswersPercent={getGameRightAnswersPercent(race)}
+                longestRightSequence={race.longestRightSequence}
+              />
               <WordsStatistics
                 name="Общая статистика по словам"
                 newWordsCount={getNewWordsCount(userStat)}
                 learnWordsCount={learnWordsCount}
                 rightAnswersPercent={getWordsRightAnswersPercent(userStat)}
               />
+            </AppContainer>
+          </AccordionDetails>
+        </Accordion>
+        <Accordion defaultExpanded>
+          <AppContainer>
+            <AccordionSummary
+              sx={{ padding: 0 }}
+              expandIcon={<ExpandMoreIcon />}
+              aria-controls="panel1a-content"
+              id="panel1a-header"
+            >
+              <Typography sx={{ fontWeight: 'bold', fontSize: 'subtitle1.fontSize' }}>
+                Долгосрочная статистика
+              </Typography>
+            </AccordionSummary>
+          </AppContainer>
+          <AccordionDetails sx={{ padding: 0, mb: 2 }}>
+            <AppContainer>
+              <LongTermStatistics stat={userStat} currentNewWordsCount={getNewWordsCount(userStat)} />
             </AppContainer>
           </AccordionDetails>
         </Accordion>

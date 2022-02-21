@@ -4,6 +4,7 @@ import Dialog from '@mui/material/Dialog';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import Box from '@mui/material/Box';
+import LoginIcon from '@mui/icons-material/Login';
 import SignInDialog from './signin-dialog';
 import RegisterDialog from './register-dialog';
 
@@ -52,7 +53,8 @@ export default function LoginMenu({ onLogIn }: LoginProps) {
   return (
     <div>
       <Button onClick={handleClickOpen} color="inherit">
-        Войти
+        Войти &nbsp;
+        <LoginIcon fontSize="small" />
       </Button>
       <Dialog fullWidth open={open} onClose={handleClose}>
         <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>

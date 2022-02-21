@@ -14,15 +14,7 @@ import AppContainer from '../shared/app-container/app-container';
 import LoginMenu from './components/login-menu';
 import AuthMenu from './components/auth-menu';
 
-const pages = [
-  PAGES.MAIN,
-  PAGES.TUTORIAL,
-  PAGES.SPRINT,
-  PAGES.AUDIO_CALL,
-  PAGES.RACE,
-  PAGES.STATISTICS,
-  PAGES.ABOUT_TEAM,
-];
+const pages = [PAGES.MAIN, PAGES.TUTORIAL, PAGES.SPRINT, PAGES.AUDIO_CALL, PAGES.RACE, PAGES.ABOUT_TEAM];
 
 const APP_LOGO = 'RS Lang';
 

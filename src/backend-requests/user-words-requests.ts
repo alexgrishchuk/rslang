@@ -139,7 +139,7 @@ export async function setWordToHard(wordId: string): Promise<boolean> {
     : await createCurrentUserWord(wordId, wordInfo);
 
   if (isSetToHard && diff) {
-    changeLearnedWordsCount(diff);
+    await changeLearnedWordsCount(diff);
   }
 
   return isSetToHard;
@@ -158,7 +158,7 @@ export async function setWordToEasy(wordId: string): Promise<boolean> {
 
     const isUpdated = await updateCurrentUserWord(wordId, { difficulty: 'easy', optional });
     if (isUpdated && isLearned) {
-      changeLearnedWordsCount(+isLearned);
+      await changeLearnedWordsCount(+isLearned);
     }
 
     return isUpdated;
@@ -169,7 +169,7 @@ export async function setWordToEasy(wordId: string): Promise<boolean> {
 
 export async function setWordToLearned(wordId: string): Promise<boolean> {
   const currentWord = await getCurrentUserWord(wordId);
-  const diff: number = currentWord && !currentWord.optional.isLearned ? 1 : 0;
+  const diff: number = !currentWord || (currentWord && !currentWord.optional.isLearned) ? 1 : 0;
   const optional = currentWord ? { ...currentWord.optional, isLearned: true } : { isLearned: true };
   const wordInfo: IPartialUserWordInfo = { difficulty: 'easy', optional };
 
@@ -178,7 +178,7 @@ export async function setWordToLearned(wordId: string): Promise<boolean> {
     : await createCurrentUserWord(wordId, wordInfo);
 
   if (isSetToLearned && diff) {
-    changeLearnedWordsCount(diff);
+    await changeLearnedWordsCount(diff);
   }
 
   return isSetToLearned;
