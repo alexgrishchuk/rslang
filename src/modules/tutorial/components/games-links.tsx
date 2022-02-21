@@ -20,7 +20,7 @@ function GamesLinks(props: { isLearnedPage: boolean; group: number }): ReactElem
         disableElevation
         disabled={isLearnedPage}
         onClick={() => {
-          linkTo(`/audio-call/${group}`);
+          linkTo(`/audio-call/${group + 1}`);
         }}
         sx={{ m: 4, width: '30%', height: 100 }}
       >
@@ -32,7 +32,7 @@ function GamesLinks(props: { isLearnedPage: boolean; group: number }): ReactElem
         disabled={isLearnedPage}
         disableElevation
         onClick={() => {
-          linkTo(`/sprint/${group}`);
+          linkTo(`/sprint/${group + 1}`);
         }}
         sx={{ width: '30%', height: 100 }}
       >
@@ -44,7 +44,7 @@ function GamesLinks(props: { isLearnedPage: boolean; group: number }): ReactElem
         disabled={isLearnedPage}
         disableElevation
         onClick={() => {
-          linkTo(`/race/${group}`);
+          linkTo(`/race/${group + 1}`);
         }}
         sx={{ width: '30%', height: 100 }}
       >

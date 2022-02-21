@@ -84,6 +84,7 @@ class CardTutorial extends Component<IProps, IState> {
 
     if (!difficultWord && !learnedWord) {
       setWordToHard(id);
+      this.setState({ learnedWord: false });
     }
 
     if (!difficultWord && learnedWord) {
@@ -107,6 +108,7 @@ class CardTutorial extends Component<IProps, IState> {
 
     if (!learnedWord && !difficultWord) {
       setWordToLearned(id);
+      this.setState({ learnedWord: true });
     }
 
     if (learnedWord && !difficultWord) {

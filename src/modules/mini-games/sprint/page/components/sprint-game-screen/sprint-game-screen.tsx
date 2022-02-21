@@ -65,9 +65,14 @@ function SprintGameScreen(props: ISprintGameScreen) {
   }, [timer]);
 
   const audioRef = useRef(null);
+  const ref = useRef(null);
+
+  const handlePlay = () => {
+    return (audioRef.current as unknown as HTMLAudioElement)?.play();
+  };
 
   useEffect(() => {
-    (audioRef.current as unknown as HTMLAudioElement)?.play();
+    (ref?.current as unknown as HTMLInputElement).click();
   }, [count]);
 
   useEffect(() => {
@@ -83,15 +88,17 @@ function SprintGameScreen(props: ISprintGameScreen) {
         <>
           <audio ref={audioRef} src={`${URL_PATH}${words[count].audio}`} />
           <div className={classes.bullets}>
-            {new Array(LIMIT).fill(0).map((word, index) => (
-              <div key={word.word}>
+            {new Array(LIMIT).fill(0).map((zero, index) => (
+              <div key={`key_${words[index].word}`}>
                 {statistic[index] && <div> {statistic[index].result ? '✔️' : '❌'}</div>}
                 {!statistic[index] && <div>⬤</div>}
               </div>
             ))}
           </div>
           <div className={classes.counterContainer}>
-            <div className={classes.timeStyle}>{timer}</div>
+            <button type="button" ref={ref} className={classes.timeStyle} onClick={handlePlay}>
+              {timer}
+            </button>
           </div>
           <div className={classes.allGameButtons}>
             <Typography variant="h3" style={{ minHeight: 60 }}>

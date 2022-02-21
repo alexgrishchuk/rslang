@@ -106,6 +106,7 @@ class Tutorial extends Component<IProps, IState> {
       this.setSixGroup();
     } else {
       const request: WordInfo[] = await getWords(newGroup, SET_PAGE);
+      this.setUserItems();
       this.setState({
         items: [...request],
         colorCategory: color,
@@ -193,7 +194,7 @@ class Tutorial extends Component<IProps, IState> {
                 </Grid>
               ))}
             </Grid>
-            <GamesLinks group={group} isLearnedPage={isLearnedPage} />
+            {group !== 6 && <GamesLinks group={group} isLearnedPage={isLearnedPage} />}
           </Container>
         </main>
         <Footer />
