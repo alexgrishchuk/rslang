@@ -23,7 +23,7 @@ function useTimer() {
     removeTimer();
   }, [timer]);
 
-  return { timer, setTimer, resetTimer };
+  return { timer, setTimer, resetTimer, removeTimer };
 }
 
 export default useTimer;

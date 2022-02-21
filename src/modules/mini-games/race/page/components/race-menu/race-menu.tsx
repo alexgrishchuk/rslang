@@ -11,8 +11,8 @@ const useStyles = makeStyles({
   },
 });
 
-function RaceMenu() {
-  const [selected, setSelected] = useState<number>(0);
+function RaceMenu({ section }: { section: number }) {
+  const [selected, setSelected] = useState<number>(section || 0);
   const { words, wrongAnswers } = useRaceMenuApi(selected);
   const classes = useStyles();
   return (

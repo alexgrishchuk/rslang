@@ -57,8 +57,8 @@ const useStyles = makeStyles({
     justifyContent: 'center',
     alignItems: 'center',
     padding: 30,
-    width: 70,
-    height: 70,
+    width: 120,
+    height: 120,
     fontSize: 70,
   },
   counterContainer: {
