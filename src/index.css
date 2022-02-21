@@ -98,3 +98,7 @@ main {
 .hard-card { background-color: #ffd4d4 }
 
 .easy-card { background-color: #e2ffe2 }
+
+.card__play-answer { color: #1976d2 }
+
+.page-learned { background-color: #e2ffe2 }
