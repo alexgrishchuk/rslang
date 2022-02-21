@@ -10,21 +10,27 @@ import Add from '@mui/icons-material/Add';
 import AddTask from '@mui/icons-material/AddTask';
 import Box from '@mui/material/Box';
 
-import { URL_PATH, IUserWord } from '../data/const';
+import { URL_PATH } from '../data/const';
 import AudioBtn from './audio';
 import { WordInfo } from '../../../backend-requests/words-requests';
-import { createCurrentUserWord, putCurrentUserWord } from '../../../backend-requests/user-words-requests';
+import {
+  IUserWordInfoWithId,
+  setWordToEasy,
+  setWordToHard,
+  IUserWordInfo,
+} from '../../../backend-requests/user-words-requests';
 
 interface IState {
   difficultWord: boolean;
   learnedWord: boolean;
+  playedWord: IUserWordInfo | null;
 }
 
 type IProps = {
   colorCard: string;
   isAuthenticated: boolean;
   data: WordInfo;
-  userItems: Array<IUserWord>;
+  userItems: IUserWordInfoWithId[];
 };
 
 class CardTutorial extends Component<IProps, IState> {
@@ -34,6 +40,7 @@ class CardTutorial extends Component<IProps, IState> {
     this.state = {
       difficultWord: false,
       learnedWord: false,
+      playedWord: null,
     };
   }
 
@@ -42,8 +49,19 @@ class CardTutorial extends Component<IProps, IState> {
       userItems,
       data: { id },
     } = this.props;
-    const isDifficultWord = userItems.find((elem: IUserWord) => elem.wordId === id && elem.difficulty === 'hard');
-    const isLearnedWord = userItems.find((elem: IUserWord) => elem.wordId === id && elem.difficulty === 'easy');
+
+    const isDifficultWord = userItems.find(
+      (elem: IUserWordInfoWithId) => elem.wordId === id && elem.difficulty === 'hard'
+    );
+
+    const isLearnedWord = userItems.find(
+      (elem: IUserWordInfoWithId) => elem.wordId === id && elem.difficulty === 'easy'
+    );
+
+    const optionWords = userItems.find((elem: IUserWordInfoWithId) => elem.optional.isNew && elem.wordId === id);
+    if (optionWords) {
+      this.setState({ playedWord: optionWords });
+    }
 
     if (isDifficultWord) {
       this.setState({ difficultWord: true });
@@ -65,16 +83,16 @@ class CardTutorial extends Component<IProps, IState> {
     } = this.props;
 
     if (!difficultWord && !learnedWord) {
-      createCurrentUserWord(id, { difficulty: 'hard', optional: {} });
+      setWordToHard(id);
     }
 
     if (!difficultWord && learnedWord) {
-      putCurrentUserWord(id, { difficulty: 'hard', optional: {} });
+      setWordToHard(id);
       this.setState({ learnedWord: false });
     }
 
     if (difficultWord && !learnedWord) {
-      putCurrentUserWord(id, { difficulty: 'easy', optional: {} });
+      setWordToEasy(id);
       this.setState({ learnedWord: true });
     }
 
@@ -88,16 +106,16 @@ class CardTutorial extends Component<IProps, IState> {
     } = this.props;
 
     if (!learnedWord && !difficultWord) {
-      createCurrentUserWord(id, { difficulty: 'easy', optional: {} });
+      setWordToEasy(id);
     }
 
     if (learnedWord && !difficultWord) {
-      putCurrentUserWord(id, { difficulty: 'hard', optional: {} });
+      setWordToHard(id);
       this.setState({ difficultWord: true });
     }
 
     if (!learnedWord && difficultWord) {
-      putCurrentUserWord(id, { difficulty: 'easy', optional: {} });
+      setWordToEasy(id);
       this.setState({ difficultWord: false });
     }
 
@@ -122,10 +140,10 @@ class CardTutorial extends Component<IProps, IState> {
         audioMeaning,
       },
     } = this.props;
-    const { learnedWord, difficultWord } = this.state;
+    const { learnedWord, difficultWord, playedWord } = this.state;
+
     const urlImg = `${URL_PATH}${image}`;
     let classNameBG = '';
-
     if (difficultWord) {
       classNameBG = 'hard-card';
     }
@@ -138,10 +156,12 @@ class CardTutorial extends Component<IProps, IState> {
       <Card sx={{ minHeight: 600 }}>
         <CardMedia component="img" image={urlImg} alt={word} height="275" />
         <CardContent className={classNameBG}>
-          <Typography gutterBottom variant="h4" color={colorCard} mb={0}>
-            {word}
+          <Stack direction="row" justifyContent="space-between" alignItems="center" spacing={2}>
+            <Typography gutterBottom variant="h4" color={colorCard} mb={0}>
+              {word}
+            </Typography>
             <AudioBtn data={{ audio, audioExample, audioMeaning }} />
-          </Typography>
+          </Stack>
           <Typography variant="h6" color="text.secondary">
             {wordTranslate} - {transcription}
           </Typography>
@@ -184,6 +204,13 @@ class CardTutorial extends Component<IProps, IState> {
               </Button>
             </Stack>
           )}
+          <Box className="card__play-answer" mt={1} height={20}>
+            {playedWord && (
+              <Typography variant="h6" display="block" color={colorCard} gutterBottom align="center">
+                Статистика в мини-играх: {playedWord.optional.rightAnswers} из {playedWord.optional.attempts}
+              </Typography>
+            )}
+          </Box>
         </CardContent>
       </Card>
     );
