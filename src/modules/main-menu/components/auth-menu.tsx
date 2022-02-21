@@ -8,7 +8,8 @@ import MenuItem from '@mui/material/MenuItem';
 import Typography from '@mui/material/Typography';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import Logout from '@mui/icons-material/Logout';
-import Article from '@mui/icons-material/Article';
+import BarChartIcon from '@mui/icons-material/BarChart';
+import PersonIcon from '@mui/icons-material/Person';
 import Divider from '@mui/material/Divider';
 import { useNavigate } from 'react-router-dom';
 import PAGES from '../../shared/data/pages';
@@ -64,12 +65,15 @@ export default function AuthMenu({ onLogOut }: AuthMenuProps) {
         onClose={handleCloseUserMenu}
       >
         <MenuItem key="Name">
+          <ListItemIcon>
+            <PersonIcon fontSize="small" />
+          </ListItemIcon>
           <Typography textAlign="center">{getUserNameFromStorage()}</Typography>
         </MenuItem>
         <Divider />
         <MenuItem key="Statistics" onClick={ToStat}>
           <ListItemIcon>
-            <Article fontSize="small" />
+            <BarChartIcon fontSize="small" />
           </ListItemIcon>
           <Typography textAlign="center">Статистика</Typography>
         </MenuItem>
