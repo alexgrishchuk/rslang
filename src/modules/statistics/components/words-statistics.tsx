@@ -14,9 +14,9 @@ export default function WordsStatistics({
   learnWordsCount,
   rightAnswersPercent,
 }: IWordsStatisticsProps) {
-  const stat1 = { caption: 'Количество новых слов', value: newWordsCount };
-  const stat2 = { caption: 'Количество изученных слов', value: learnWordsCount };
-  const stat3 = { caption: 'Процент правильных ответов', value: rightAnswersPercent };
+  const stat1 = { caption: 'Количество новых слов', value: `${newWordsCount}` };
+  const stat2 = { caption: 'Количество изученных слов', value: `${learnWordsCount}` };
+  const stat3 = { caption: 'Процент правильных ответов', value: `${rightAnswersPercent}%` };
 
   return <StatisticsOutput name={name} stat1={stat1} stat2={stat2} stat3={stat3} />;
 }

@@ -5,7 +5,7 @@ import Box from '@mui/material/Box';
 
 interface IStat {
   caption: string;
-  value: number;
+  value: string;
 }
 
 interface StatisticsOutputProps {
