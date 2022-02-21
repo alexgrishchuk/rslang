@@ -1,9 +1,12 @@
 import { Typography } from '@mui/material';
 import React from 'react';
+import { useParams } from 'react-router-dom';
 import AppContainer from '../../../shared/app-container/app-container';
 import RaceMenu from './components/race-menu/race-menu';
 
 function Race() {
+  const params = useParams();
+  const section = Number(params.id);
   return (
     <AppContainer>
       <Typography variant="h2" m={2}>
@@ -13,7 +16,7 @@ function Race() {
         Игра позволяет развить навыки восприятия речи за очень ограниченное время. Пользователь только слышит и видит
         слово и видит 5 вариантов его перевода. Необходимо выбрать правильный перевод слова за 10 секунд.
       </Typography>
-      <RaceMenu />
+      <RaceMenu section={section} />
     </AppContainer>
   );
 }

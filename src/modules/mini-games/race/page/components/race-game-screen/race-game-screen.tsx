@@ -78,10 +78,17 @@ function RaceGameScreen(props: IRaceGameScreen) {
   const isGameFinished = statistic.length === LIMIT;
 
   const audioRef = useRef(null);
+  const ref = useRef(null);
+
+  const handlePlay = () => {
+    return (audioRef.current as unknown as HTMLAudioElement)?.play();
+  };
 
   useEffect(() => {
-    (audioRef.current as unknown as HTMLAudioElement)?.play();
-  }, [answers]);
+    setTimeout(() => {
+      (ref?.current as unknown as HTMLInputElement)?.click();
+    }, 0);
+  }, [count]);
 
   return (
     <>
@@ -97,7 +104,9 @@ function RaceGameScreen(props: IRaceGameScreen) {
             ))}
           </div>
           <div className={classes.counterContainer}>
-            <div className={classes.timeStyle}>{timer}</div>
+            <button ref={ref} type="button" className={classes.timeStyle} onClick={handlePlay}>
+              {timer}
+            </button>
           </div>
           <div className={classes.allGameButtons}>
             <Typography variant="h3" style={{ minHeight: 60 }}>
