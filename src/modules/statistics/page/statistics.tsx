@@ -1,11 +1,20 @@
 import React from 'react';
 import Footer from '../../shared/footer/footer';
+import UserStatistics from '../components/user-statistics';
 
-function Statistics() {
+interface IStatisticsProps {
+  isAuthenticated: boolean;
+}
+
+function Statistics({ isAuthenticated }: IStatisticsProps) {
+  if (!isAuthenticated) {
+    return null;
+  }
+
   return (
     <>
       <main>
-        <h1>Statistics</h1>
+        <UserStatistics />
       </main>
       <Footer />
     </>

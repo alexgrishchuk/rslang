@@ -54,3 +54,8 @@ export function isUserAuthenticated(): boolean {
   const userInfo = getUserInfoFromStorage();
   return !!userInfo && userInfo.message === 'Authenticated';
 }
+
+export function getUserNameFromStorage(): string | null {
+  const userInfo = getUserInfoFromStorage();
+  return userInfo ? userInfo.name : null;
+}

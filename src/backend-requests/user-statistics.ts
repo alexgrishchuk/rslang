@@ -1,36 +1,41 @@
 import ENDPOINTS from './data/endpoints';
 import { request } from './utils/common-request';
-import { WordInfo } from './words-requests';
-import { setWordToNew } from './user-words-requests';
 import { getUserIdFromStorage } from '../storage/storage';
 
-interface IUserStatistics {
+interface IStatForDay {
+  date: string;
+  newWordsCount: number;
+  learnedWordsCount: number;
+}
+
+export interface IGameStatistics {
+  newWordsCount: number;
+  rightAnswersCount: number;
+  answersCount: number;
+  longestRightSequence: number;
+}
+
+export interface IUserStatistics {
   learnedWords: number;
   optional: {
     current: {
-      date: string;
-      audioCall: {
-        newWordsCount: number;
-        rightAnswersCount: number;
-        answersCount: number;
-        longestRightSequence: number;
-      };
-      sprint: {
-        newWordsCount: number;
-        rightAnswersCount: number;
-        answersCount: number;
-        longestRightSequence: number;
-      };
+      learnWordsCount: number;
+      timestamp: number;
+      audioCall: IGameStatistics;
+      sprint: IGameStatistics;
+      race: IGameStatistics;
     };
+    longTerm: string;
   };
 }
 
-function createDefaultStatistics(): IUserStatistics {
+export function createDefaultStatistics(): IUserStatistics {
   return {
     learnedWords: 0,
     optional: {
       current: {
-        date: '',
+        learnWordsCount: 0,
+        timestamp: 0,
         audioCall: {
           newWordsCount: 0,
           rightAnswersCount: 0,
@@ -43,12 +48,19 @@ function createDefaultStatistics(): IUserStatistics {
           answersCount: 0,
           longestRightSequence: 0,
         },
+        race: {
+          newWordsCount: 0,
+          rightAnswersCount: 0,
+          answersCount: 0,
+          longestRightSequence: 0,
+        },
       },
+      longTerm: '[]',
     },
   };
 }
 
-async function getUserStatistics(userId: string): Promise<IUserStatistics | null> {
+export async function getUserStatistics(userId: string): Promise<IUserStatistics | null> {
   const init: RequestInit = { method: 'GET' };
 
   const response = await request(ENDPOINTS.getUserStatistics(userId), init);
@@ -74,37 +86,68 @@ async function saveUserStatistics(userId: string, statistics: IUserStatistics): 
   return Boolean(response && response.ok);
 }
 
-async function saveCurrentUserStatistics(statistics: IUserStatistics): Promise<boolean> {
+export async function saveCurrentUserStatistics(statistics: IUserStatistics): Promise<boolean> {
   const userId = getUserIdFromStorage();
   return userId !== null ? saveUserStatistics(userId, statistics) : false;
 }
 
-export async function saveGameStatistics(
-  gameType: 'audioCall' | 'sprint',
-  gameLongestRightSequence: number,
-  statArray: { word: WordInfo; answer: string; result: boolean }[]
-): Promise<boolean> {
-  const backendStatistics = await getCurrentUserStatistics();
-  const currentStatistics = backendStatistics || createDefaultStatistics();
-  const { newWordsCount, rightAnswersCount, answersCount, longestRightSequence } =
-    currentStatistics.optional.current[gameType];
+async function updateLongTermStatistics(currentStatistics: IUserStatistics): Promise<boolean> {
+  const { learnedWords, optional } = currentStatistics;
+  const newWordsCount =
+    optional.current.audioCall.newWordsCount +
+    optional.current.sprint.newWordsCount +
+    optional.current.race.newWordsCount;
+  const newDate = new Date(optional.current.timestamp);
+  const learnedWordsCount = learnedWords;
 
-  const gameAnswersCount = statArray.length;
-  let gameRightAnswersCount = 0;
-  let gameNewWordsCount = 0;
-  statArray.forEach(async (playedWord) => {
-    gameRightAnswersCount += +playedWord.result;
-    const result = await setWordToNew(playedWord.word.id, playedWord.result);
-    gameNewWordsCount += +result.isNew;
-  });
-
-  const updatedGameStat = {
-    newWordsCount: newWordsCount + gameNewWordsCount,
-    rightAnswersCount: rightAnswersCount + gameRightAnswersCount,
-    answersCount: answersCount + gameAnswersCount,
-    longestRightSequence: Math.max(longestRightSequence, gameLongestRightSequence),
+  const statForDay: IStatForDay = {
+    date: newDate.toLocaleDateString(),
+    newWordsCount,
+    learnedWordsCount,
   };
 
-  currentStatistics.optional.current[gameType] = updatedGameStat;
-  return saveCurrentUserStatistics(currentStatistics);
+  const longTermArray: IStatForDay[] = JSON.parse(optional.longTerm);
+  longTermArray.push(statForDay);
+  optional.longTerm = JSON.stringify(longTermArray);
+  optional.current = createDefaultStatistics().optional.current;
+
+  return saveCurrentUserStatistics({ learnedWords, optional });
+}
+
+function isSameDay(firstTimestamp: number, secondTimestamp: number): boolean {
+  const firstDate = new Date(firstTimestamp);
+  const secondDate = new Date(secondTimestamp);
+  return (
+    firstDate.getFullYear() === secondDate.getFullYear() &&
+    firstDate.getMonth() === secondDate.getMonth() &&
+    firstDate.getDate() === secondDate.getDate()
+  );
+}
+
+export async function getUpdatedStatistics(): Promise<IUserStatistics> {
+  const newTimestamp = Date.now();
+  let backendStatistics = await getCurrentUserStatistics();
+
+  if (backendStatistics) {
+    const prevTimestamp = backendStatistics.optional.current.timestamp;
+    const isSameStatDay = isSameDay(prevTimestamp, newTimestamp);
+    if (!isSameStatDay) {
+      await updateLongTermStatistics(backendStatistics);
+      backendStatistics = await getCurrentUserStatistics();
+    }
+  }
+
+  const currentStatistics = backendStatistics || createDefaultStatistics();
+  currentStatistics.optional.current.timestamp = newTimestamp;
+  return currentStatistics;
+}
+
+export async function changeLearnedWordsCount(diffCount: number): Promise<boolean> {
+  const currentStatistics = await getUpdatedStatistics();
+  currentStatistics.learnedWords += diffCount;
+  currentStatistics.optional.current.learnWordsCount += diffCount;
+  return saveCurrentUserStatistics({
+    learnedWords: currentStatistics.learnedWords,
+    optional: currentStatistics.optional,
+  });
 }
