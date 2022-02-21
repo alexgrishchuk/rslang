@@ -1,7 +1,8 @@
-import React from 'react';
+/* eslint-disable react-hooks/exhaustive-deps */
+import React, { useEffect } from 'react';
 import { Button, List, ListItem, Typography } from '@mui/material';
 import { makeStyles } from '@mui/styles';
-import { IStatistic, URL_PATH } from '../../../audio-call.types';
+import { IStatistic, URL_PATH } from '../../../sprint.types';
 
 const useStyles = makeStyles({
   container: {
@@ -50,13 +51,13 @@ const useStyles = makeStyles({
   },
 });
 
-interface IAudioCallGameFinishScreen {
+interface ISprintGameFinishScreen {
   statistic: IStatistic[];
   onFinishGame: () => void;
   clearStatistic: () => void;
 }
 
-function AudioCallGameFinishScreen(props: IAudioCallGameFinishScreen) {
+function SprintGameFinishScreen(props: ISprintGameFinishScreen) {
   const { statistic, onFinishGame, clearStatistic } = props;
   const { length } = statistic;
   const falseAnswers = statistic.filter((s) => !s.result);
@@ -99,9 +100,11 @@ function AudioCallGameFinishScreen(props: IAudioCallGameFinishScreen) {
     };
   });
 
+  const bestSeries = getBestSeries();
+
   const classes = useStyles();
   const percent = Math.trunc((trueAnswers.length / length) * 100);
-  const bestSeries = getBestSeries();
+
   return (
     <>
       <div className={classes.container}>
@@ -173,4 +176,4 @@ function AudioCallGameFinishScreen(props: IAudioCallGameFinishScreen) {
     </>
   );
 }
-export default AudioCallGameFinishScreen;
+export default SprintGameFinishScreen;

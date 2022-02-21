@@ -27,7 +27,7 @@ function AppRouter() {
       <ResponsiveAppBar isAuthenticated={isAuthenticated} onLogIn={LogInUser} onLogOut={LogOutUser} />
       <Routes>
         <Route path={PAGES.MAIN.path} element={<Main />} />
-        <Route path={PAGES.TUTORIAL.path} element={<Tutorial />} />
+        <Route path={PAGES.TUTORIAL.path} element={<Tutorial isAuthenticated={isAuthenticated} />} />
         <Route path={PAGES.AUDIO_CALL.path} element={<AudioCall />} />
         <Route path={PAGES.SPRINT.path} element={<Sprint />} />
         <Route path={PAGES.STATISTICS.path} element={<Statistics />} />

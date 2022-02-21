@@ -15,7 +15,7 @@ code {
 .footer {
   background-color: #1976d2;
   color: #fff;
-  padding: .5rem 0;
+  padding: 1rem 0;
 }
 
 main {
@@ -27,6 +27,7 @@ main {
   transition: 1s;
   filter: invert(97%) sepia(3%) saturate(253%) hue-rotate(274deg) brightness(122%) contrast(100%);
 }
+
 .footer__logo:hover { transform: scale(1.1) }
 
 .git-person:hover {
@@ -81,3 +82,19 @@ main {
   transform: scale(50);
   color: white;
 }
+
+.type-learning {
+  background-color: #1976d2;
+  transition: 1s;
+  text-align: center;
+}
+
+.type-learning:hover {
+  background-color: #1976d2;
+  transform: scale(1.05);
+  color: white;
+}
+
+.hard-card { background-color: #ffd4d4 }
+
+.easy-card { background-color: #e2ffe2 }

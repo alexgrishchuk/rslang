@@ -27,7 +27,9 @@ function AudioCallMenu() {
           <AudioCallMenuButton section={6} onClick={() => setSelected(6)} />
         </div>
       )}
-      {!!selected && words.length > 0 && <AudioCallGameScreen wrongAnswers={wrongAnswers} words={words} />}
+      {!!selected && words.length > 0 && (
+        <AudioCallGameScreen wrongAnswers={wrongAnswers} words={words} onFinishGame={() => setSelected(0)} />
+      )}
     </>
   );
 }
