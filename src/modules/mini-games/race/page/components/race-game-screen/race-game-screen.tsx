@@ -89,8 +89,8 @@ function RaceGameScreen(props: IRaceGameScreen) {
         <>
           <audio ref={audioRef} src={`${URL_PATH}${words[count].audio}`} />
           <div className={classes.bullets}>
-            {new Array(LIMIT).fill(0).map((word, index) => (
-              <div key={word.word}>
+            {new Array(LIMIT).fill(0).map((zero, index) => (
+              <div key={`key_${words[index].word}`}>
                 {statistic[index] && <div> {statistic[index].result ? '✔️' : '❌'}</div>}
                 {!statistic[index] && <div>⬤</div>}
               </div>
