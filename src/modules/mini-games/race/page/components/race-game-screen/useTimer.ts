@@ -1,15 +1,15 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useState, useEffect } from 'react';
 
-function useTimer(limit: number) {
-  const [timer, setTimer] = useState<number>(limit);
+function useTimer() {
+  const [timer, setTimer] = useState<number>(10);
   const [id, setId] = useState<NodeJS.Timeout | null>(null);
   const removeTimer = () => {
     clearTimeout(id as unknown as number);
   };
 
   const resetTimer = () => {
-    setTimer(limit);
+    setTimer(10);
   };
 
   const handler = () => {

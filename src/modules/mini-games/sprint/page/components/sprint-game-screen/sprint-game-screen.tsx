@@ -4,7 +4,8 @@ import { Button, Typography } from '@mui/material';
 
 import React, { MouseEventHandler, useEffect, useRef, useState } from 'react';
 import { WordInfo } from '../../../../../../backend-requests/words-requests';
-import { IStatistic, URL_PATH } from '../../../sprint.types';
+import { URL_PATH } from '../../../../../tutorial/data/const';
+import { IStatistic } from '../../../../mini-games.types';
 import SprintGameFinishScreen from './sprint-game-finish-screen';
 import useStyles from './sprint-game-screen.styles';
 import useTimer from './useTimer';
@@ -21,20 +22,20 @@ function SprintGameScreen(props: ISprintGameScreen) {
   const { wrongAnswers, words, onFinishGame } = props;
   const [count, setCounter] = useState<number>(0);
   const [statistic, setStatistic] = useState<IStatistic[]>([]);
-  const [answers, setAnswers] = useState<string[]>([]);
-  const { timer, resetTimer } = useTimer();
+  const [question, setQuestion] = useState<string>('');
+  const { timer, resetTimer } = useTimer(30);
   const classes = useStyles();
-  function shuffleWords(arr: string[]): string[] {
-    return arr.sort(() => (Math.random() > 0.5 ? -1 : 1));
-  }
 
   function getAnswers(counter: number) {
-    return shuffleWords([...shuffleWords(wrongAnswers).slice(wrongAnswers.length - 4), words[counter].wordTranslate]);
+    return [words[counter].wordTranslate, wrongAnswers[count]];
   }
+
+  const setQuestionForView = (arr: string[]) => setQuestion(arr[Math.trunc(Math.random() * 1.99)]);
 
   function nextHandler() {
     setCounter(count + 1);
-    setAnswers(getAnswers(count + 1));
+    const newAnswers = getAnswers(count + 1);
+    setQuestionForView(newAnswers);
     resetTimer();
   }
 
@@ -43,11 +44,16 @@ function SprintGameScreen(props: ISprintGameScreen) {
     nextHandler();
   }
 
-  function answerHandler(event: MouseEvent) {
-    const selectedAnswer = (event?.target as HTMLButtonElement).textContent || '';
+  function answerHandler(value: boolean) {
+    const result =
+      (question === words[count].wordTranslate) === value || (question !== words[count].wordTranslate) !== value;
     setStatistic([
       ...statistic,
-      { word: words[count], answer: selectedAnswer, result: words[count].wordTranslate === selectedAnswer },
+      {
+        word: words[count],
+        answer: result ? words[count].wordTranslate : question,
+        result,
+      },
     ]);
     nextHandler();
   }
@@ -58,29 +64,18 @@ function SprintGameScreen(props: ISprintGameScreen) {
     }
   }, [timer]);
 
-  useEffect(() => {
-    setAnswers(getAnswers(count));
-  }, [wrongAnswers]);
-
-  function getBorderColor(answer: string) {
-    if (!statistic[count]) return '';
-    const rightAnswer = statistic[count].word.wordTranslate;
-    if (statistic[count].answer !== answer) {
-      if (rightAnswer === answer) {
-        return '2px solid green';
-      }
-      return '';
-    }
-    return rightAnswer !== answer ? '2px solid red' : '2px solid green';
-  }
-
-  const isGameFinished = statistic.length === LIMIT;
-
   const audioRef = useRef(null);
 
   useEffect(() => {
     (audioRef.current as unknown as HTMLAudioElement)?.play();
-  }, [answers]);
+  }, [count]);
+
+  useEffect(() => {
+    const newAnswers = getAnswers(count + 1);
+    setQuestionForView(newAnswers);
+  }, [wrongAnswers]);
+
+  const isGameFinished = statistic.length === LIMIT;
 
   return (
     <>
@@ -100,23 +95,15 @@ function SprintGameScreen(props: ISprintGameScreen) {
           </div>
           <div className={classes.allGameButtons}>
             <Typography variant="h3" style={{ minHeight: 60 }}>
-              {words[count].word}
+              {question}
             </Typography>
             <div>
-              {answers.map((answer) => (
-                <Button
-                  className={classes.playButton}
-                  style={{ border: getBorderColor(answer) }}
-                  key={`key_${answer}`}
-                  type="button"
-                  onClick={answerHandler as unknown as MouseEventHandler<HTMLButtonElement>}
-                  disabled={Boolean(statistic[count])}
-                >
-                  {answer}
-                </Button>
-              ))}
-            </div>
-            <div>
+              <Button className={classes.playButton} type="button" onClick={() => answerHandler(true)}>
+                Да
+              </Button>
+              <Button className={classes.playButton} type="button" onClick={() => answerHandler(false)}>
+                Нет
+              </Button>
               <Button
                 className={classes.playButton}
                 type="button"

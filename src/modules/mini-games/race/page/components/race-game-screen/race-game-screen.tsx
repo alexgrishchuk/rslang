@@ -1,13 +1,16 @@
+/* eslint-disable jsx-a11y/media-has-caption */
+/* eslint-disable react-hooks/exhaustive-deps */
 import { Button, Typography } from '@mui/material';
 
 import React, { MouseEventHandler, useEffect, useRef, useState } from 'react';
 import { WordInfo } from '../../../../../../backend-requests/words-requests';
 import { URL_PATH } from '../../../../../tutorial/data/const';
 import { IStatistic } from '../../../../mini-games.types';
-import AudioCallGameFinishScreen from './audio-call-game-finish-screen';
-import useStyles from './audio-call-game-screen.styles';
+import RaceGameFinishScreen from './race-game-finish-screen';
+import useStyles from './race-game-screen.styles';
+import useTimer from './useTimer';
 
-interface IAudioCallGameScreen {
+interface IRaceGameScreen {
   wrongAnswers: string[];
   words: WordInfo[];
   onFinishGame: () => void;
@@ -15,13 +18,13 @@ interface IAudioCallGameScreen {
 
 const LIMIT = 10;
 
-function AudioCallGameScreen(props: IAudioCallGameScreen) {
+function RaceGameScreen(props: IRaceGameScreen) {
   const { wrongAnswers, words, onFinishGame } = props;
   const [count, setCounter] = useState<number>(0);
   const [statistic, setStatistic] = useState<IStatistic[]>([]);
   const [answers, setAnswers] = useState<string[]>([]);
+  const { timer, resetTimer } = useTimer();
   const classes = useStyles();
-
   function shuffleWords(arr: string[]): string[] {
     return arr.sort(() => (Math.random() > 0.5 ? -1 : 1));
   }
@@ -30,23 +33,32 @@ function AudioCallGameScreen(props: IAudioCallGameScreen) {
     return shuffleWords([...shuffleWords(wrongAnswers).slice(wrongAnswers.length - 4), words[counter].wordTranslate]);
   }
 
+  function nextHandler() {
+    setCounter(count + 1);
+    setAnswers(getAnswers(count + 1));
+    resetTimer();
+  }
+
+  function notKnowHandler() {
+    setStatistic([...statistic, { word: words[count], answer: '', result: false }]);
+    nextHandler();
+  }
+
   function answerHandler(event: MouseEvent) {
     const selectedAnswer = (event?.target as HTMLButtonElement).textContent || '';
     setStatistic([
       ...statistic,
       { word: words[count], answer: selectedAnswer, result: words[count].wordTranslate === selectedAnswer },
     ]);
+    nextHandler();
   }
 
-  function nextHandler() {
-    setCounter(count + 1);
-    setAnswers(getAnswers(count + 1));
-  }
-  const notKnowHandler = (): void => {
-    setStatistic([...statistic, { word: words[count], answer: '', result: false }]);
-  };
+  useEffect(() => {
+    if (timer === 0) {
+      notKnowHandler();
+    }
+  }, [timer]);
 
-  /* eslint-disable */
   useEffect(() => {
     setAnswers(getAnswers(count));
   }, [wrongAnswers]);
@@ -65,11 +77,12 @@ function AudioCallGameScreen(props: IAudioCallGameScreen) {
 
   const isGameFinished = statistic.length === LIMIT;
 
-  const handlePlayButtonClick = () => {
-    (audioRef.current as unknown as HTMLAudioElement).play();
-  };
-
   const audioRef = useRef(null);
+
+  useEffect(() => {
+    (audioRef.current as unknown as HTMLAudioElement)?.play();
+  }, [answers]);
+
   return (
     <>
       {!isGameFinished && (
@@ -83,15 +96,13 @@ function AudioCallGameScreen(props: IAudioCallGameScreen) {
               </div>
             ))}
           </div>
+          <div className={classes.counterContainer}>
+            <div className={classes.timeStyle}>{timer}</div>
+          </div>
           <div className={classes.allGameButtons}>
             <Typography variant="h3" style={{ minHeight: 60 }}>
-              {statistic[count] ? words[count].word : ''}
+              {words[count].word}
             </Typography>
-            <div>
-              <Button className={classes.playSound} type="button" onClick={handlePlayButtonClick}>
-                Прослушать
-              </Button>
-            </div>
             <div>
               {answers.map((answer) => (
                 <Button
@@ -107,35 +118,30 @@ function AudioCallGameScreen(props: IAudioCallGameScreen) {
               ))}
             </div>
             <div>
-              {!statistic[count] && (
-                <Button className={classes.playButton} type="button" onClick={notKnowHandler}>
-                  Не знаю
-                </Button>
-              )}
-              {statistic[count] && (
-                <Button
-                  className={classes.playButton}
-                  type="button"
-                  onClick={nextHandler as unknown as MouseEventHandler<HTMLButtonElement>}
-                >
-                  Продолжить
-                </Button>
-              )}
+              <Button
+                className={classes.playButton}
+                type="button"
+                onClick={notKnowHandler as unknown as MouseEventHandler<HTMLButtonElement>}
+                disabled={Boolean(statistic[count])}
+              >
+                Не знаю
+              </Button>
             </div>
           </div>
         </>
       )}
       {isGameFinished && (
-        <AudioCallGameFinishScreen
+        <RaceGameFinishScreen
           statistic={statistic}
           onFinishGame={onFinishGame}
           clearStatistic={() => {
             setStatistic([]);
             setCounter(0);
+            resetTimer();
           }}
         />
       )}
     </>
   );
 }
-export default AudioCallGameScreen;
+export default RaceGameScreen;

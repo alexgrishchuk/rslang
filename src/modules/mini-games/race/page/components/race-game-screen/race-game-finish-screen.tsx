@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React from 'react';
 import { Button, List, ListItem, Typography } from '@mui/material';
 import { makeStyles } from '@mui/styles';
@@ -51,13 +52,13 @@ const useStyles = makeStyles({
   },
 });
 
-interface IAudioCallGameFinishScreen {
+interface IRaceGameFinishScreen {
   statistic: IStatistic[];
   onFinishGame: () => void;
   clearStatistic: () => void;
 }
 
-function AudioCallGameFinishScreen(props: IAudioCallGameFinishScreen) {
+function RaceGameFinishScreen(props: IRaceGameFinishScreen) {
   const { statistic, onFinishGame, clearStatistic } = props;
   const { length } = statistic;
   const falseAnswers = statistic.filter((s) => !s.result);
@@ -100,9 +101,11 @@ function AudioCallGameFinishScreen(props: IAudioCallGameFinishScreen) {
     };
   });
 
+  const bestSeries = getBestSeries();
+
   const classes = useStyles();
   const percent = Math.trunc((trueAnswers.length / length) * 100);
-  const bestSeries = getBestSeries();
+
   return (
     <>
       <div className={classes.container}>
@@ -174,4 +177,4 @@ function AudioCallGameFinishScreen(props: IAudioCallGameFinishScreen) {
     </>
   );
 }
-export default AudioCallGameFinishScreen;
+export default RaceGameFinishScreen;
