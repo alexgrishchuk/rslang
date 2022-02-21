@@ -106,8 +106,8 @@ function AudioCallGameFinishScreen(props: IAudioCallGameFinishScreen) {
   const bestSeries = getBestSeries();
 
   useEffect(() => {
-    saveGameStatistics('race', bestSeries, statistic);
-  }, [statistic]);
+    saveGameStatistics('audioCall', bestSeries, statistic);
+  }, [bestSeries, statistic]);
 
   return (
     <>

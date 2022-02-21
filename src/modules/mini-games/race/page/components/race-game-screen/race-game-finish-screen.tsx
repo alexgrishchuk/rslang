@@ -109,7 +109,7 @@ function RaceGameFinishScreen(props: IRaceGameFinishScreen) {
 
   useEffect(() => {
     saveGameStatistics('race', bestSeries, statistic);
-  }, [statistic]);
+  }, [bestSeries, statistic]);
 
   return (
     <>

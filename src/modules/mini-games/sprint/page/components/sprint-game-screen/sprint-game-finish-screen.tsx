@@ -107,8 +107,8 @@ function SprintGameFinishScreen(props: ISprintGameFinishScreen) {
   const percent = Math.trunc((trueAnswers.length / length) * 100);
 
   useEffect(() => {
-    saveGameStatistics('race', bestSeries, statistic);
-  }, [statistic]);
+    saveGameStatistics('sprint', bestSeries, statistic);
+  }, [bestSeries, statistic]);
 
   return (
     <>
