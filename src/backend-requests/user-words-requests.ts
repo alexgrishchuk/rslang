@@ -16,6 +16,10 @@ export interface IUserWordInfo {
   };
 }
 
+export interface IUserWordInfoWithId extends IUserWordInfo {
+  wordId: string;
+}
+
 interface IPartialUserWordInfo {
   difficulty: 'hard' | 'easy';
   optional?: {
@@ -27,7 +31,7 @@ interface IPartialUserWordInfo {
   };
 }
 
-async function getAllUserWords(userId: string): Promise<IUserWordInfo[] | null> {
+async function getAllUserWords(userId: string): Promise<IUserWordInfoWithId[] | null> {
   const init: RequestInit = {
     method: 'GET',
   };
@@ -37,7 +41,7 @@ async function getAllUserWords(userId: string): Promise<IUserWordInfo[] | null> 
   return response && response.ok ? response.json() : null;
 }
 
-export async function getAllCurrentUserWords(): Promise<IUserWordInfo[] | null> {
+export async function getAllCurrentUserWords(): Promise<IUserWordInfoWithId[] | null> {
   const userId = getUserIdFromStorage();
   return userId !== null ? getAllUserWords(userId) : null;
 }

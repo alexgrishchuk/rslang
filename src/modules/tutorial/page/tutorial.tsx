@@ -1,18 +1,18 @@
 import React, { Component } from 'react';
 
-// import Card from '@mui/material/Card';
 import Container from '@mui/material/Container';
 import Typography from '@mui/material/Typography';
-// import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
 import Grid from '@mui/material/Grid';
 import Pagination from '@mui/material/Pagination';
+import DoneOutlineOutlined from '@mui/icons-material/DoneOutlineOutlined';
 
 import CardTutorial from '../components/card-tutorial';
-import { CATEGORIES, IUserWord } from '../data/const';
 import Footer from '../../shared/footer/footer';
+import { CATEGORIES } from '../data/const';
 import { getWordById, getWords, WordInfo } from '../../../backend-requests/words-requests';
-import { getAllCurrentUserWords } from '../../../backend-requests/user-words-requests';
+import { getAllCurrentUserWords, IUserWordInfoWithId } from '../../../backend-requests/user-words-requests';
+import { isAllWordsOnPageLearned } from '../../../backend-requests/aggregated-words-requests';
 
 type IProps = {
   isAuthenticated: boolean;
@@ -22,7 +22,8 @@ interface IState {
   page: number;
   group: number;
   colorCategory: string;
-  userItems: Array<IUserWord>;
+  userItems: IUserWordInfoWithId[];
+  isLearnedPage: boolean;
 }
 
 class Tutorial extends Component<IProps, IState> {
@@ -42,24 +43,27 @@ class Tutorial extends Component<IProps, IState> {
       items: [],
       page: pgData.page,
       group: pgData.group,
-      colorCategory: '#ffeb3b',
+      colorCategory: '#df8ae5',
       userItems: [],
+      isLearnedPage: false,
     };
   }
 
   async componentDidMount() {
-    const { page, group } = this.state;
-    const response: Array<IUserWord> = await getAllCurrentUserWords();
+    const { group, page } = this.state;
+    const response: IUserWordInfoWithId[] | null = await getAllCurrentUserWords();
     const request: WordInfo[] = await getWords(group, page);
 
     if (group === 6) {
       this.setSixGroup();
     }
 
-    this.setState({
-      items: [...request],
-      userItems: [...response],
-    });
+    if (response) {
+      this.setState({ userItems: [...response] });
+    }
+
+    this.setState({ items: [...request] });
+    this.checkLearnedPage();
   }
 
   componentDidUpdate() {
@@ -68,17 +72,19 @@ class Tutorial extends Component<IProps, IState> {
   }
 
   async setUserItems() {
-    const response: Array<IUserWord> | undefined = await getAllCurrentUserWords();
+    const response: IUserWordInfoWithId[] | null = await getAllCurrentUserWords();
+
     if (response) {
       this.setState({ userItems: [...response] });
     }
   }
 
   setSixGroup = async () => {
-    const response: Array<IUserWord> = await getAllCurrentUserWords();
+    const response: IUserWordInfoWithId[] | null = await getAllCurrentUserWords();
+
     if (response) {
-      const arrHardWords = response.filter((elem: IUserWord) => elem.difficulty === 'hard');
-      const arr = arrHardWords.map(async (elem) => getWordById(elem.wordId));
+      const arrHardWords = response.filter((elem: IUserWordInfoWithId) => elem.difficulty === 'hard');
+      const arr = arrHardWords.map((elem: IUserWordInfoWithId) => getWordById(elem.wordId));
       const promiseWords = await Promise.all(arr);
       const NUMBER_GROUP = 6;
       const COLOR_GROUP = '#d50000';
@@ -104,6 +110,8 @@ class Tutorial extends Component<IProps, IState> {
         group: newGroup,
       });
     }
+
+    this.checkLearnedPage();
   };
 
   handleChange = async (_event: React.ChangeEvent<unknown>, value: number): Promise<void> => {
@@ -114,17 +122,32 @@ class Tutorial extends Component<IProps, IState> {
       items: [...request],
       page: value - 1,
     });
+
+    this.checkLearnedPage();
+  };
+
+  checkLearnedPage = async () => {
+    const { group, page } = this.state;
+    const countLearnedWords: boolean = await isAllWordsOnPageLearned(group, page);
+    if (countLearnedWords) {
+      this.setState({ isLearnedPage: true });
+    } else {
+      this.setState({ isLearnedPage: false });
+    }
   };
 
   render() {
     const MAX_PAGE = 30;
-    const { items, page, group, colorCategory, userItems } = this.state;
+    const { items, page, group, colorCategory, userItems, isLearnedPage } = this.state;
     const { isAuthenticated } = this.props;
 
     return (
       <>
         <main>
-          <Container maxWidth={false} sx={{ maxWidth: 1920 }}>
+          <Container maxWidth={false} sx={{ maxWidth: 1920 }} className={isLearnedPage ? 'page-learned' : ''}>
+            <Typography variant="h2" gutterBottom component="h2">
+              Учебник
+            </Typography>
             <Grid container spacing={2} sx={{ mt: 1 }} justifyContent="center">
               {CATEGORIES.map((item) => (
                 <Grid item xs="auto" key={item.id}>
@@ -147,6 +170,12 @@ class Tutorial extends Component<IProps, IState> {
                 color="primary"
                 sx={{ display: 'flex', justifyContent: 'center', m: 2 }}
               />
+            )}
+            {isLearnedPage && (
+              <Typography variant="h3" align="center">
+                Страница полностью изучена
+                <DoneOutlineOutlined sx={{ ml: 5, fontSize: 40 }} />
+              </Typography>
             )}
             <Grid container columnSpacing={1} rowSpacing={2} sx={{ ml: 0, mt: 1, mb: 1 }}>
               {items?.map((elem: WordInfo) => (
