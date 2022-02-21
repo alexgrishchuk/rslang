@@ -47,8 +47,8 @@ export async function isAllWordsOnPageLearned(
     group,
     page,
     wordsPerPage,
-    `{"userWord.optional.isLearned":true}`
+    `{"$and":[{"userWord.optional.isLearned":true}, {"group":${group}}, {"page":${page}}]}`
   );
-  
+
   return !!wordsArray && !!wordsArray[0].totalCount.length && wordsArray[0].totalCount[0].count >= wordsPerPage;
 }
