@@ -100,14 +100,16 @@ class Tutorial extends Component<IProps, IState> {
   };
 
   setNewGroup = async (newGroup: number, color: string): Promise<void> => {
+    const SET_PAGE = 0;
+
     if (newGroup === 6) {
       this.setSixGroup();
     } else {
-      const request: WordInfo[] = await getWords(newGroup, 0);
+      const request: WordInfo[] = await getWords(newGroup, SET_PAGE);
       this.setState({
         items: [...request],
         colorCategory: color,
-        page: 0,
+        page: SET_PAGE,
         group: newGroup,
       });
     }
@@ -130,7 +132,6 @@ class Tutorial extends Component<IProps, IState> {
   checkLearnedPage = async () => {
     const { group, page } = this.state;
     const countLearnedWords: boolean = await isAllWordsOnPageLearned(group, page);
-    console.log('countLearnedWords', countLearnedWords);
 
     if (countLearnedWords) {
       this.setState({ isLearnedPage: true });
@@ -192,7 +193,7 @@ class Tutorial extends Component<IProps, IState> {
                 </Grid>
               ))}
             </Grid>
-            <GamesLinks isLearnedPage={isLearnedPage} />
+            <GamesLinks group={group} isLearnedPage={isLearnedPage} />
           </Container>
         </main>
         <Footer />
