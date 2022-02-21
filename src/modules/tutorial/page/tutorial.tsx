@@ -130,6 +130,8 @@ class Tutorial extends Component<IProps, IState> {
   checkLearnedPage = async () => {
     const { group, page } = this.state;
     const countLearnedWords: boolean = await isAllWordsOnPageLearned(group, page);
+    console.log('countLearnedWords', countLearnedWords);
+
     if (countLearnedWords) {
       this.setState({ isLearnedPage: true });
     } else {

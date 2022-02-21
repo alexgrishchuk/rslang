@@ -1,13 +1,11 @@
 import React from 'react';
-import Stack from '@mui/material/Stack';
-import Box from '@mui/material/Box';
-import Typography from '@mui/material/Typography';
+import { Stack, Box, Typography } from '@mui/material';
 
 import imgMainHead from '../../../assets/main_2.jpg';
 
 function ShortDescription() {
   return (
-    <Stack direction="row" justifyContent="center" alignItems="center" spacing={2}>
+    <Stack direction={{ xs: 'column', lg: 'row' }} justifyContent="center" alignItems="center" spacing={2}>
       <Box>
         <Typography variant="h5" gutterBottom component="div">
           RS Lang - Приложения для изучения английского языка.
@@ -25,7 +23,9 @@ function ShortDescription() {
           Слова разбитых на разделы по уровню сложности с удобной навигацией.
         </Typography>
       </Box>
-      <img src={imgMainHead} width={600} alt="main img" loading="lazy" />
+      <Box sx={{ display: { xs: 'none', md: 'block' } }}>
+        <img src={imgMainHead} width={650} alt="main img" loading="lazy" />
+      </Box>
     </Stack>
   );
 }
