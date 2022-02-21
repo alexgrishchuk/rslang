@@ -9,10 +9,10 @@ interface IPeople {
 const PEOPLE: IPeople[] = [
   {
     id: 0,
-    name: 'Александ',
+    name: 'Александр',
     position: 'Team Lead, developer',
     nameGithub: 'alexgrishchuk',
-    skills: ['Главная страница', 'Авторизация', 'Прогресс изучения', 'cтраница "Cтатистика"', 'Изученные слова'],
+    skills: ['Меню', 'Авторизация', 'Прогресс изучения', 'cтраница "Cтатистика"', 'Изученные слова'],
   },
   {
     id: 1,
