@@ -11,9 +11,9 @@ const useStyles = makeStyles({
   },
 });
 
-function AudioCallMenu({ section }: { section: number }) {
+function AudioCallMenu({ section, page }: { section: number; page: number }) {
   const [selected, setSelected] = useState<number>(section || 0);
-  const { words, wrongAnswers } = useCallMenuApi(selected);
+  const { words, wrongAnswers } = useCallMenuApi(selected, page);
   const classes = useStyles();
   return (
     <>

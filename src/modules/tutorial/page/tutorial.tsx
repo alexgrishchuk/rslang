@@ -194,7 +194,7 @@ class Tutorial extends Component<IProps, IState> {
                 </Grid>
               ))}
             </Grid>
-            {group !== 6 && <GamesLinks group={group} isLearnedPage={isLearnedPage} />}
+            {group !== 6 && <GamesLinks group={group} isLearnedPage={isLearnedPage} page={page} />}
           </Container>
         </main>
         <Footer />

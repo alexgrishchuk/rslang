@@ -7,6 +7,7 @@ import SprintMenu from './components/sprint-menu/sprint-menu';
 function Sprint() {
   const params = useParams();
   const section = Number(params.id);
+  const page = Number(params.page);
   return (
     <AppContainer>
       <Typography variant="h2" m={2}>
@@ -16,7 +17,7 @@ function Sprint() {
         Пользователю будет предлагаться слово на английском языке и его перевод. В течение 30 секунд нужно угадывать,
         верный перевод предложен к английскому слову или нет.
       </Typography>
-      <SprintMenu section={section} />
+      <SprintMenu section={section} page={page} />
     </AppContainer>
   );
 }

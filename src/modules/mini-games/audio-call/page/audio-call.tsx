@@ -7,6 +7,7 @@ import AudioCallMenu from './components/audio-call-menu/audio-call-menu';
 function AudioCall() {
   const params = useParams();
   const section = Number(params.id);
+  const page = Number(params.page);
   return (
     <AppContainer>
       <Typography variant="h2" m={2}>
@@ -16,7 +17,7 @@ function AudioCall() {
         Аудирование развивает навыки восприятия речи. Пользователь только слышит слово и видит 5 вариантов его перевода.
         Необходимо выбрать правильный перевод озвученного слова.
       </Typography>
-      <AudioCallMenu section={section} />
+      <AudioCallMenu section={section} page={page} />
     </AppContainer>
   );
 }
