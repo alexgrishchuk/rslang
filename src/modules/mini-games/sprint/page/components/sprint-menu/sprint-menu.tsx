@@ -11,9 +11,9 @@ const useStyles = makeStyles({
   },
 });
 
-function SprintMenu({ section }: { section: number }) {
+function SprintMenu({ section, page }: { section: number; page: number }) {
   const [selected, setSelected] = useState<number>(section);
-  const { words, wrongAnswers } = useCallMenuApi(selected);
+  const { words, wrongAnswers } = useCallMenuApi(selected, page);
   const classes = useStyles();
   return (
     <>

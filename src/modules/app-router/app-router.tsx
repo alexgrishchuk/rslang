@@ -33,13 +33,13 @@ function AppRouter() {
         <Route path={PAGES.MAIN.path} element={<Main />} />
         <Route path={PAGES.TUTORIAL.path} element={<Tutorial isAuthenticated={isAuthenticated} />} />
         <Route path={PAGES.AUDIO_CALL.path} element={<AudioCall />}>
-          <Route path=":id" element={<AudioCall />} />
+          <Route path=":id/:page" element={<AudioCall />} />
         </Route>
         <Route path={PAGES.SPRINT.path} element={<Sprint />}>
-          <Route path=":id" element={<Sprint />} />
+          <Route path=":id/:page" element={<Sprint />} />
         </Route>
         <Route path={PAGES.RACE.path} element={<Race />}>
-          <Route path=":id" element={<Race />} />
+          <Route path=":id/:page" element={<Race />} />
         </Route>
         <Route path={PAGES.STATISTICS.path} element={<Statistics isAuthenticated={isAuthenticated} />} />
         <Route path={PAGES.ABOUT_TEAM.path} element={<AboutTeam />} />

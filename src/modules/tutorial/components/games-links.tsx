@@ -6,9 +6,9 @@ import { useNavigate } from 'react-router-dom';
 import AudiotrackTwoToneIcon from '@mui/icons-material/AudiotrackTwoTone';
 import MobiledataOffTwoToneIcon from '@mui/icons-material/MobiledataOffTwoTone';
 
-function GamesLinks(props: { isLearnedPage: boolean; group: number }): ReactElement {
+function GamesLinks(props: { isLearnedPage: boolean; group: number; page: number }): ReactElement {
   const navigate = useNavigate();
-  const { isLearnedPage, group } = props;
+  const { isLearnedPage, group, page } = props;
   const linkTo = (path: string) => {
     navigate(path);
   };
@@ -20,7 +20,7 @@ function GamesLinks(props: { isLearnedPage: boolean; group: number }): ReactElem
         disableElevation
         disabled={isLearnedPage}
         onClick={() => {
-          linkTo(`/audio-call/${group + 1}`);
+          linkTo(`/audio-call/${group + 1}/${page}`);
         }}
         sx={{ m: 4, width: '30%', height: 100 }}
       >
@@ -32,7 +32,7 @@ function GamesLinks(props: { isLearnedPage: boolean; group: number }): ReactElem
         disabled={isLearnedPage}
         disableElevation
         onClick={() => {
-          linkTo(`/sprint/${group + 1}`);
+          linkTo(`/sprint/${group + 1}/${page}`);
         }}
         sx={{ width: '30%', height: 100 }}
       >
@@ -44,7 +44,7 @@ function GamesLinks(props: { isLearnedPage: boolean; group: number }): ReactElem
         disabled={isLearnedPage}
         disableElevation
         onClick={() => {
-          linkTo(`/race/${group + 1}`);
+          linkTo(`/race/${group + 1}/${page}`);
         }}
         sx={{ width: '30%', height: 100 }}
       >

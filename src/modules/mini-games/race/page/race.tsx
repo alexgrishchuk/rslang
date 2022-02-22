@@ -7,6 +7,7 @@ import RaceMenu from './components/race-menu/race-menu';
 function Race() {
   const params = useParams();
   const section = Number(params.id);
+  const page = Number(params.page);
   return (
     <AppContainer>
       <Typography variant="h2" m={2}>
@@ -16,7 +17,7 @@ function Race() {
         Игра позволяет развить навыки восприятия речи за очень ограниченное время. Пользователь только слышит и видит
         слово и видит 5 вариантов его перевода. Необходимо выбрать правильный перевод слова за 10 секунд.
       </Typography>
-      <RaceMenu section={section} />
+      <RaceMenu section={section} page={page} />
     </AppContainer>
   );
 }
