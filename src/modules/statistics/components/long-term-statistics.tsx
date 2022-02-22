@@ -12,6 +12,13 @@ export const options = {
       position: 'top' as const,
     },
   },
+  scales: {
+    y: {
+      ticks: {
+        stepSize: 1,
+      },
+    },
+  },
 };
 
 interface ILongTermStatProps {

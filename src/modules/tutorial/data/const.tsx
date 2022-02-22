@@ -1,10 +1,12 @@
+import config from '../../../config.json';
+
 interface ICategories {
   id: number;
   name: string;
   color: string;
 }
 
-const URL_PATH = 'http://localhost:8000/';
+const URL_PATH = `${config.url}/`;
 
 const CATEGORIES: ICategories[] = [
   { id: 0, name: 'Раздел 1', color: '#df8ae5' },
