@@ -16,7 +16,7 @@ interface ISprintGameScreen {
   onFinishGame: () => void;
 }
 
-const LIMIT = 10;
+const LIMIT = 20;
 
 function SprintGameScreen(props: ISprintGameScreen) {
   const { wrongAnswers, words, onFinishGame } = props;
