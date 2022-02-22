@@ -13,7 +13,7 @@ interface IAudioCallGameScreen {
   onFinishGame: () => void;
 }
 
-const LIMIT = 10;
+const LIMIT = 20;
 
 function AudioCallGameScreen(props: IAudioCallGameScreen) {
   const { wrongAnswers, words, onFinishGame } = props;

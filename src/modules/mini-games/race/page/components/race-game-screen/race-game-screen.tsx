@@ -16,7 +16,7 @@ interface IRaceGameScreen {
   onFinishGame: () => void;
 }
 
-const LIMIT = 10;
+const LIMIT = 20;
 
 function RaceGameScreen(props: IRaceGameScreen) {
   const { wrongAnswers, words, onFinishGame } = props;
