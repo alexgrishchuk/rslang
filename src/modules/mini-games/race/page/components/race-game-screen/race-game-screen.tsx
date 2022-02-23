@@ -218,6 +218,7 @@ function RaceGameScreen(props: IRaceGameScreen) {
           clearStatistic={() => {
             setStatistic([]);
             setCounter(0);
+            setAnswers(getAnswers(0));
             resetTimer();
           }}
         />

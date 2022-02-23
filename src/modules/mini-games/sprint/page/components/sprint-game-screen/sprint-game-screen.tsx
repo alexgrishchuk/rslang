@@ -26,7 +26,7 @@ function SprintGameScreen(props: ISprintGameScreen) {
   const classes = useStyles();
 
   function getAnswers(counter: number) {
-    return [words[counter].wordTranslate, wrongAnswers[count]];
+    return [words[counter].wordTranslate, wrongAnswers[counter]];
   }
 
   const setQuestionForView = (arr: string[]) => setQuestion(arr[Math.trunc(Math.random() * 1.99)]);
@@ -77,7 +77,7 @@ function SprintGameScreen(props: ISprintGameScreen) {
   }, [question]);
 
   useEffect(() => {
-    const newAnswers = getAnswers(count + 1);
+    const newAnswers = getAnswers(count);
     setQuestionForView(newAnswers);
   }, [wrongAnswers]);
 
