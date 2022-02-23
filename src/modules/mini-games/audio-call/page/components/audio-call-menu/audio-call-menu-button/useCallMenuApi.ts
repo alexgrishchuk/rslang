@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { getNotLearnedWords } from '../../../../../../../backend-requests/aggregated-words-requests';
 import { getWords, WordInfo } from '../../../../../../../backend-requests/words-requests';
 
 function useCallMenuApi(group: number, page: number) {
@@ -12,7 +13,11 @@ function useCallMenuApi(group: number, page: number) {
       if (pageNumberForWrong < 0) {
         pageNumberForWrong = 1;
       }
-      getWords(group - 1, pageNumber).then((data) => setWords(data));
+      if (Number.isNaN(page)) {
+        getWords(group - 1, pageNumber).then((data) => setWords(data));
+      } else {
+        getNotLearnedWords(group - 1, pageNumber, 20).then((data) => setWords(data));
+      }
       getWords(group - 1, pageNumberForWrong).then((data) => setWrongAnswers(data.map((word) => word.wordTranslate)));
     }
   }, [group, page]);
