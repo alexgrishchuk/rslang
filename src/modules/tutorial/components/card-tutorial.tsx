@@ -54,9 +54,7 @@ class CardTutorial extends Component<IProps, IState> {
       (elem: IUserWordInfoWithId) => elem.wordId === id && elem.difficulty === 'hard'
     );
 
-    const isLearnedWord = userItems.find(
-      (elem: IUserWordInfoWithId) => elem.wordId === id && elem.difficulty === 'easy'
-    );
+    const isLearnedWord = userItems.find((elem: IUserWordInfoWithId) => elem.wordId === id && elem.optional.isLearned);
 
     const optionWords = userItems.find((elem: IUserWordInfoWithId) => elem.optional.isNew && elem.wordId === id);
     if (optionWords) {
