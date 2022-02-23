@@ -21,7 +21,7 @@ function RaceGameScreen(props: IRaceGameScreen) {
   const [count, setCounter] = useState<number>(0);
   const [statistic, setStatistic] = useState<IStatistic[]>([]);
   const [answers, setAnswers] = useState<string[]>([]);
-  const { timer, resetTimer } = useTimer();
+  const { timer, resetTimer, removeTimer } = useTimer();
   const limit = words.length;
   const classes = useStyles();
   function shuffleWords(arr: string[]): string[] {
@@ -29,10 +29,11 @@ function RaceGameScreen(props: IRaceGameScreen) {
   }
 
   function getAnswers(counter: number) {
-    return shuffleWords([...shuffleWords(wrongAnswers).slice(wrongAnswers.length - 4), words[counter].wordTranslate]);
+    return shuffleWords([...shuffleWords(wrongAnswers).slice(wrongAnswers.length - 4), words[counter]?.wordTranslate]);
   }
 
   function nextHandler() {
+    if (statistic.length === limit) return;
     setCounter(count + 1);
     setAnswers(getAnswers(count + 1));
     resetTimer();
@@ -47,7 +48,7 @@ function RaceGameScreen(props: IRaceGameScreen) {
     const selectedAnswer = (event?.target as HTMLButtonElement).textContent || '';
     setStatistic([
       ...statistic,
-      { word: words[count], answer: selectedAnswer, result: words[count].wordTranslate === selectedAnswer },
+      { word: words[count], answer: selectedAnswer, result: words[count]?.wordTranslate === selectedAnswer },
     ]);
     nextHandler();
   }
@@ -59,6 +60,7 @@ function RaceGameScreen(props: IRaceGameScreen) {
   }, [timer]);
 
   useEffect(() => {
+    if (count >= limit - 1) return;
     setAnswers(getAnswers(count));
   }, [wrongAnswers]);
 
@@ -84,9 +86,11 @@ function RaceGameScreen(props: IRaceGameScreen) {
   };
 
   useEffect(() => {
-    setTimeout(() => {
-      (ref?.current as unknown as HTMLInputElement)?.click();
-    }, 0);
+    if (isGameFinished) {
+      removeTimer();
+      return;
+    }
+    (ref?.current as unknown as HTMLInputElement)?.click();
   }, [count]);
 
   const ref1 = useRef(null);

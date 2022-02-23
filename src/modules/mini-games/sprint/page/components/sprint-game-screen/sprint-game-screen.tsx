@@ -22,7 +22,7 @@ function SprintGameScreen(props: ISprintGameScreen) {
   const [count, setCounter] = useState<number>(0);
   const [statistic, setStatistic] = useState<IStatistic[]>([]);
   const [question, setQuestion] = useState<string>('');
-  const { timer, resetTimer } = useTimer(30);
+  const { timer, resetTimer, removeTimer } = useTimer(30);
   const classes = useStyles();
 
   function getAnswers(counter: number) {
@@ -32,6 +32,7 @@ function SprintGameScreen(props: ISprintGameScreen) {
   const setQuestionForView = (arr: string[]) => setQuestion(arr[Math.trunc(Math.random() * 1.99)]);
 
   function nextHandler() {
+    if (count >= limit - 1) return;
     setCounter(count + 1);
     const newAnswers = getAnswers(count + 1);
     setQuestionForView(newAnswers);
@@ -69,8 +70,12 @@ function SprintGameScreen(props: ISprintGameScreen) {
   const handlePlay = () => {
     return (audioRef.current as unknown as HTMLAudioElement)?.play();
   };
-
+  const isGameFinished = statistic.length === limit;
   useEffect(() => {
+    if (isGameFinished) {
+      removeTimer();
+      return;
+    }
     if (ref?.current) {
       (ref?.current as unknown as HTMLInputElement).click();
     }
@@ -81,7 +86,6 @@ function SprintGameScreen(props: ISprintGameScreen) {
     setQuestionForView(newAnswers);
   }, [wrongAnswers]);
 
-  const isGameFinished = statistic.length === limit;
   const refY = useRef(null);
   const refN = useRef(null);
 
@@ -149,9 +153,9 @@ function SprintGameScreen(props: ISprintGameScreen) {
           statistic={statistic}
           onFinishGame={onFinishGame}
           clearStatistic={() => {
+            resetTimer();
             setStatistic([]);
             setCounter(0);
-            resetTimer();
           }}
         />
       )}
