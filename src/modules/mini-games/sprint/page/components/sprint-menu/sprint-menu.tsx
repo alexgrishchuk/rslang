@@ -1,8 +1,9 @@
+import { Typography } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import React, { useState } from 'react';
+import useGameApi from '../../../../useGameApi';
 import SprintGameScreen from '../sprint-game-screen/sprint-game-screen';
 import SprintMenuButton from './sprint-menu-button/sprint-menu-button';
-import useCallMenuApi from './sprint-menu-button/useSprintMenuApi';
 
 const useStyles = makeStyles({
   buttons: {
@@ -13,10 +14,13 @@ const useStyles = makeStyles({
 
 function SprintMenu({ section, page }: { section: number; page: number }) {
   const [selected, setSelected] = useState<number>(section);
-  const { words, wrongAnswers } = useCallMenuApi(selected, page);
+  const { wrongAnswers, words, loaded } = useGameApi(selected, page);
   const classes = useStyles();
   return (
     <>
+      {Boolean(selected) && words.length === 0 && loaded && (
+        <Typography variant="h2">Слов недостаточно для игры</Typography>
+      )}
       {!selected && (
         <div className={classes.buttons}>
           <SprintMenuButton section={1} onClick={() => setSelected(1)} />
