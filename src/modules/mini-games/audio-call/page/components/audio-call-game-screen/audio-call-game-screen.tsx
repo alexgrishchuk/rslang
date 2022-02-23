@@ -13,10 +13,9 @@ interface IAudioCallGameScreen {
   onFinishGame: () => void;
 }
 
-const LIMIT = 20;
-
 function AudioCallGameScreen(props: IAudioCallGameScreen) {
   const { wrongAnswers, words, onFinishGame } = props;
+  const limit = words.length;
   const [count, setCounter] = useState<number>(0);
   const [statistic, setStatistic] = useState<IStatistic[]>([]);
   const [answers, setAnswers] = useState<string[]>([]);
@@ -63,7 +62,7 @@ function AudioCallGameScreen(props: IAudioCallGameScreen) {
     return rightAnswer !== answer ? '2px solid red' : '2px solid green';
   }
 
-  const isGameFinished = statistic.length === LIMIT;
+  const isGameFinished = statistic.length === limit;
 
   const handlePlayButtonClick = () => {
     (audioRef.current as unknown as HTMLAudioElement).play();
@@ -114,11 +113,12 @@ function AudioCallGameScreen(props: IAudioCallGameScreen) {
   const audioRef = useRef(null);
   return (
     <>
-      {!isGameFinished && (
+      {limit === 0 && <Typography>Слов недостаточно для игры</Typography>}
+      {!isGameFinished && limit !== 0 && (
         <>
           <audio ref={audioRef} src={`${URL_PATH}${words[count].audio}`} />
           <div className={classes.bullets}>
-            {new Array(LIMIT).fill(0).map((zero, index) => (
+            {new Array(limit).fill(0).map((zero, index) => (
               <div key={`key_${words[index].word}`}>
                 {statistic[index] && <div> {statistic[index].result ? '✔️' : '❌'}</div>}
                 {!statistic[index] && <div>⬤</div>}
@@ -206,7 +206,7 @@ function AudioCallGameScreen(props: IAudioCallGameScreen) {
           </div>
         </>
       )}
-      {isGameFinished && (
+      {isGameFinished && limit !== 0 && (
         <AudioCallGameFinishScreen
           statistic={statistic}
           onFinishGame={onFinishGame}

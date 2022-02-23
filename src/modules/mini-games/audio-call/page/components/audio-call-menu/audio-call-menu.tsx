@@ -1,8 +1,9 @@
+import { Typography } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import React, { useState } from 'react';
+import useGameApi from '../../../../useGameApi';
 import AudioCallGameScreen from '../audio-call-game-screen/audio-call-game-screen';
 import AudioCallMenuButton from './audio-call-menu-button/audio-call-menu-button';
-import useCallMenuApi from './audio-call-menu-button/useCallMenuApi';
 
 const useStyles = makeStyles({
   buttons: {
@@ -13,10 +14,13 @@ const useStyles = makeStyles({
 
 function AudioCallMenu({ section, page }: { section: number; page: number }) {
   const [selected, setSelected] = useState<number>(section || 0);
-  const { words, wrongAnswers } = useCallMenuApi(selected, page);
+  const { words, wrongAnswers, loaded } = useGameApi(selected, page);
   const classes = useStyles();
   return (
     <>
+      {Boolean(selected) && words.length === 0 && loaded && (
+        <Typography variant="h2">Слов недостаточно для игры</Typography>
+      )}
       {!selected && (
         <div className={classes.buttons}>
           <AudioCallMenuButton section={1} onClick={() => setSelected(1)} />

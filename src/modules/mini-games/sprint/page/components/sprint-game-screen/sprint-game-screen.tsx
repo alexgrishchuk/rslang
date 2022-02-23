@@ -16,10 +16,9 @@ interface ISprintGameScreen {
   onFinishGame: () => void;
 }
 
-const LIMIT = 20;
-
 function SprintGameScreen(props: ISprintGameScreen) {
   const { wrongAnswers, words, onFinishGame } = props;
+  const limit = words.length;
   const [count, setCounter] = useState<number>(0);
   const [statistic, setStatistic] = useState<IStatistic[]>([]);
   const [question, setQuestion] = useState<string>('');
@@ -82,7 +81,7 @@ function SprintGameScreen(props: ISprintGameScreen) {
     setQuestionForView(newAnswers);
   }, [wrongAnswers]);
 
-  const isGameFinished = statistic.length === LIMIT;
+  const isGameFinished = statistic.length === limit;
   const refY = useRef(null);
   const refN = useRef(null);
 
@@ -110,7 +109,7 @@ function SprintGameScreen(props: ISprintGameScreen) {
         <>
           <audio ref={audioRef} src={`${URL_PATH}${words[count].audio}`} />
           <div className={classes.bullets}>
-            {new Array(LIMIT).fill(0).map((zero, index) => (
+            {new Array(limit).fill(0).map((zero, index) => (
               <div key={`key_${words[index].word}`}>
                 {statistic[index] && <div> {statistic[index].result ? '✔️' : '❌'}</div>}
                 {!statistic[index] && <div>⬤</div>}

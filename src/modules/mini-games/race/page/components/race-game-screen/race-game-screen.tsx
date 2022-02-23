@@ -16,14 +16,13 @@ interface IRaceGameScreen {
   onFinishGame: () => void;
 }
 
-const LIMIT = 20;
-
 function RaceGameScreen(props: IRaceGameScreen) {
   const { wrongAnswers, words, onFinishGame } = props;
   const [count, setCounter] = useState<number>(0);
   const [statistic, setStatistic] = useState<IStatistic[]>([]);
   const [answers, setAnswers] = useState<string[]>([]);
   const { timer, resetTimer } = useTimer();
+  const limit = words.length;
   const classes = useStyles();
   function shuffleWords(arr: string[]): string[] {
     return arr.sort(() => (Math.random() > 0.5 ? -1 : 1));
@@ -75,7 +74,7 @@ function RaceGameScreen(props: IRaceGameScreen) {
     return rightAnswer !== answer ? '2px solid red' : '2px solid green';
   }
 
-  const isGameFinished = statistic.length === LIMIT;
+  const isGameFinished = statistic.length === limit;
 
   const audioRef = useRef(null);
   const ref = useRef(null);
@@ -130,7 +129,7 @@ function RaceGameScreen(props: IRaceGameScreen) {
         <>
           <audio ref={audioRef} src={`${URL_PATH}${words[count].audio}`} />
           <div className={classes.bullets}>
-            {new Array(LIMIT).fill(0).map((zero, index) => (
+            {new Array(limit).fill(0).map((zero, index) => (
               <div key={`key_${words[index].word}`}>
                 {statistic[index] && <div> {statistic[index].result ? '✔️' : '❌'}</div>}
                 {!statistic[index] && <div>⬤</div>}
