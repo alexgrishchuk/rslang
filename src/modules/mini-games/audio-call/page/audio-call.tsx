@@ -8,6 +8,7 @@ function AudioCall() {
   const params = useParams();
   const section = Number(params.id);
   const page = Number(params.page);
+
   return (
     <AppContainer>
       <Typography variant="h2" m={2}>
