@@ -60,7 +60,6 @@ function RaceGameScreen(props: IRaceGameScreen) {
   }, [timer]);
 
   useEffect(() => {
-    if (count >= limit - 1) return;
     setAnswers(getAnswers(count));
   }, [wrongAnswers]);
 
