@@ -6,6 +6,7 @@ import AccordionSummary from '@mui/material/AccordionSummary';
 import AccordionDetails from '@mui/material/AccordionDetails';
 import Typography from '@mui/material/Typography';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import CircularProgress from '@mui/material/CircularProgress';
 import GameStatistics from './game-statistics';
 import WordsStatistics from './words-statistics';
 import LongTermStatistics from './long-term-statistics';
@@ -46,6 +47,7 @@ function getNewWordsCount(stat: IUserStatistics): number {
 
 export default function UserStatistics() {
   const [userStat, setUserStat] = useState<IUserStatistics>(createDefaultStatistics());
+  const [loading, setLoading] = React.useState(false);
   const {
     optional: {
       current: { learnWordsCount, sprint, audioCall, race },
@@ -53,75 +55,92 @@ export default function UserStatistics() {
   } = userStat;
 
   useEffect(() => {
+    let isRequestCancelled = false;
     (async () => {
+      setLoading(true);
       const statistics: IUserStatistics = await getUpdatedStatistics();
-      setUserStat(statistics);
+      if (!isRequestCancelled) {
+        setUserStat(statistics);
+        setLoading(false);
+      }
     })();
+
+    return () => {
+      isRequestCancelled = true;
+    };
   }, []);
 
   return (
-    <Box>
-      <Paper elevation={3}>
-        <Accordion defaultExpanded>
-          <AppContainer>
-            <AccordionSummary
-              sx={{ padding: 0 }}
-              expandIcon={<ExpandMoreIcon />}
-              aria-controls="panel1a-content"
-              id="panel1a-header"
-            >
-              <Typography sx={{ fontWeight: 'bold', fontSize: 'subtitle1.fontSize' }}>Статистика за сегодня</Typography>
-            </AccordionSummary>
-          </AppContainer>
-          <AccordionDetails sx={{ padding: 0, mb: 2 }}>
+    <Box sx={{ minHeight: 'inherit', position: 'relative' }}>
+      {!loading ? (
+        <Paper elevation={3}>
+          <Accordion defaultExpanded>
             <AppContainer>
-              <GameStatistics
-                name="Спринт"
-                newWordsCount={sprint.newWordsCount}
-                rightAnswersPercent={getGameRightAnswersPercent(sprint)}
-                longestRightSequence={sprint.longestRightSequence}
-              />
-              <GameStatistics
-                name="Аудиовызов"
-                newWordsCount={audioCall.newWordsCount}
-                rightAnswersPercent={getGameRightAnswersPercent(audioCall)}
-                longestRightSequence={audioCall.longestRightSequence}
-              />
-              <GameStatistics
-                name="Гонка"
-                newWordsCount={race.newWordsCount}
-                rightAnswersPercent={getGameRightAnswersPercent(race)}
-                longestRightSequence={race.longestRightSequence}
-              />
-              <WordsStatistics
-                name="Общая статистика по словам"
-                newWordsCount={getNewWordsCount(userStat)}
-                learnWordsCount={learnWordsCount}
-                rightAnswersPercent={getWordsRightAnswersPercent(userStat)}
-              />
+              <AccordionSummary
+                sx={{ padding: 0 }}
+                expandIcon={<ExpandMoreIcon />}
+                aria-controls="panel1a-content"
+                id="panel1a-header"
+              >
+                <Typography sx={{ fontWeight: 'bold', fontSize: 'subtitle1.fontSize' }}>
+                  Статистика за сегодня
+                </Typography>
+              </AccordionSummary>
             </AppContainer>
-          </AccordionDetails>
-        </Accordion>
-        <Accordion defaultExpanded>
-          <AppContainer>
-            <AccordionSummary
-              sx={{ padding: 0 }}
-              expandIcon={<ExpandMoreIcon />}
-              aria-controls="panel1a-content"
-              id="panel1a-header"
-            >
-              <Typography sx={{ fontWeight: 'bold', fontSize: 'subtitle1.fontSize' }}>
-                Долгосрочная статистика
-              </Typography>
-            </AccordionSummary>
-          </AppContainer>
-          <AccordionDetails sx={{ padding: 0, mb: 2 }}>
+            <AccordionDetails sx={{ padding: 0, mb: 2 }}>
+              <AppContainer>
+                <GameStatistics
+                  name="Спринт"
+                  newWordsCount={sprint.newWordsCount}
+                  rightAnswersPercent={getGameRightAnswersPercent(sprint)}
+                  longestRightSequence={sprint.longestRightSequence}
+                />
+                <GameStatistics
+                  name="Аудиовызов"
+                  newWordsCount={audioCall.newWordsCount}
+                  rightAnswersPercent={getGameRightAnswersPercent(audioCall)}
+                  longestRightSequence={audioCall.longestRightSequence}
+                />
+                <GameStatistics
+                  name="Гонка"
+                  newWordsCount={race.newWordsCount}
+                  rightAnswersPercent={getGameRightAnswersPercent(race)}
+                  longestRightSequence={race.longestRightSequence}
+                />
+                <WordsStatistics
+                  name="Общая статистика по словам"
+                  newWordsCount={getNewWordsCount(userStat)}
+                  learnWordsCount={learnWordsCount}
+                  rightAnswersPercent={getWordsRightAnswersPercent(userStat)}
+                />
+              </AppContainer>
+            </AccordionDetails>
+          </Accordion>
+          <Accordion defaultExpanded>
             <AppContainer>
-              <LongTermStatistics stat={userStat} currentNewWordsCount={getNewWordsCount(userStat)} />
+              <AccordionSummary
+                sx={{ padding: 0 }}
+                expandIcon={<ExpandMoreIcon />}
+                aria-controls="panel1a-content"
+                id="panel1a-header"
+              >
+                <Typography sx={{ fontWeight: 'bold', fontSize: 'subtitle1.fontSize' }}>
+                  Долгосрочная статистика
+                </Typography>
+              </AccordionSummary>
             </AppContainer>
-          </AccordionDetails>
-        </Accordion>
-      </Paper>
+            <AccordionDetails sx={{ padding: 0, mb: 2, overflow: 'auto' }}>
+              <AppContainer>
+                <Box sx={{ position: 'relative', minWidth: '480px' }}>
+                  <LongTermStatistics stat={userStat} currentNewWordsCount={getNewWordsCount(userStat)} />
+                </Box>
+              </AppContainer>
+            </AccordionDetails>
+          </Accordion>
+        </Paper>
+      ) : (
+        <CircularProgress sx={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)' }} />
+      )}
     </Box>
   );
 }

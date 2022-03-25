@@ -34,6 +34,8 @@ type IProps = {
 };
 
 class CardTutorial extends Component<IProps, IState> {
+  private isComponentMounted: boolean;
+
   constructor(props: IProps) {
     super(props);
 
@@ -42,9 +44,13 @@ class CardTutorial extends Component<IProps, IState> {
       learnedWord: false,
       playedWord: null,
     };
+
+    this.isComponentMounted = false;
   }
 
   async componentDidMount() {
+    this.isComponentMounted = true;
+
     const {
       userItems,
       data: { id },
@@ -74,52 +80,66 @@ class CardTutorial extends Component<IProps, IState> {
     }
   }
 
-  changeDifficultWord = () => {
+  componentWillUnmount() {
+    this.isComponentMounted = false;
+  }
+
+  changeDifficultWord = async () => {
     const { difficultWord, learnedWord } = this.state;
     const {
       data: { id },
     } = this.props;
 
+    let newState = {};
+
     if (!difficultWord && !learnedWord) {
-      setWordToHard(id);
-      this.setState({ learnedWord: false });
+      await setWordToHard(id);
+      newState = { learnedWord: false };
     }
 
     if (!difficultWord && learnedWord) {
-      setWordToHard(id);
-      this.setState({ learnedWord: false });
+      await setWordToHard(id);
+      newState = { learnedWord: false };
     }
 
     if (difficultWord && !learnedWord) {
-      setWordToLearned(id);
-      this.setState({ learnedWord: true });
+      await setWordToLearned(id);
+      newState = { learnedWord: true };
     }
 
-    this.setState({ difficultWord: !difficultWord });
+    if (this.isComponentMounted) {
+      this.setState(newState);
+      this.setState({ difficultWord: !difficultWord });
+    }
   };
 
-  changeLearnedWord = () => {
+  changeLearnedWord = async () => {
     const { difficultWord, learnedWord } = this.state;
     const {
       data: { id },
     } = this.props;
 
+    let newState = {};
+
     if (!learnedWord && !difficultWord) {
-      setWordToLearned(id);
-      this.setState({ learnedWord: true });
+      await setWordToLearned(id);
+      newState = { learnedWord: true };
     }
 
     if (learnedWord && !difficultWord) {
-      setWordToHard(id);
-      this.setState({ difficultWord: true });
+      await setWordToHard(id);
+      newState = { difficultWord: true };
     }
 
     if (!learnedWord && difficultWord) {
-      setWordToLearned(id);
-      this.setState({ difficultWord: false });
+      await setWordToLearned(id);
+      newState = { difficultWord: false };
     }
 
-    this.setState({ learnedWord: !learnedWord });
+    if (this.isComponentMounted) {
+      this.setState(newState);
+      this.setState({ learnedWord: !learnedWord });
+    }
   };
 
   render() {

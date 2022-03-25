@@ -4,6 +4,9 @@ import DialogActions from '@mui/material/DialogActions';
 import Button from '@mui/material/Button';
 import Popover from '@mui/material/Popover';
 import Typography from '@mui/material/Typography';
+import Fade from '@mui/material/Fade';
+import CircularProgress from '@mui/material/CircularProgress';
+import Backdrop from '@mui/material/Backdrop';
 import * as yup from 'yup';
 import { useFormik } from 'formik';
 import { signIn } from '../../../backend-requests/user-requests';
@@ -25,6 +28,7 @@ interface SignInProps {
 
 export default function SignInDialog({ onCloseCallback, onLoginCallback }: SignInProps) {
   const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(null);
+  const [loading, setLoading] = React.useState(false);
 
   const submitButton = useRef(null);
 
@@ -35,7 +39,9 @@ export default function SignInDialog({ onCloseCallback, onLoginCallback }: SignI
     },
     validationSchema,
     onSubmit: async (values) => {
+      setLoading(true);
       const isSignIn = await signIn(values.email, values.password);
+      setLoading(false);
 
       if (isSignIn) {
         onCloseCallback();
@@ -104,6 +110,17 @@ export default function SignInDialog({ onCloseCallback, onLoginCallback }: SignI
           </Typography>
         </Popover>
       </DialogActions>
+      <Fade
+        in={loading}
+        style={{
+          transitionDelay: loading ? '800ms' : '0ms',
+        }}
+        unmountOnExit
+      >
+        <Backdrop sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }} open={open}>
+          <CircularProgress />
+        </Backdrop>
+      </Fade>
     </form>
   );
 }
