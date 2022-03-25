@@ -46,5 +46,5 @@ See the section about [deployment](https://facebook.github.io/create-react-app/d
 
 ### `yarn format`
 Runs prettier.
-### `yarn format`
+### `yarn lint`
 Runs ESLint.
