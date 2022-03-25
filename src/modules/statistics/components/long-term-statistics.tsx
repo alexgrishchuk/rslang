@@ -55,5 +55,5 @@ export default function LongTermStatistics({ stat, currentNewWordsCount }: ILong
   };
   longTermArray.push(currentStat);
 
-  return <Bar options={options} data={createData(longTermArray)} />;
+  return <Bar style={{ minWidth: '400px' }} options={options} data={createData(longTermArray)} />;
 }

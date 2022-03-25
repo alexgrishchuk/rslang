@@ -1,15 +1,13 @@
 body {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans",
+    "Droid Sans", "Helvetica Neue", sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
 code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New", monospace;
 }
 
 .footer {
@@ -29,13 +27,13 @@ main {
 }
 
 .footer__logo:hover {
-  transform: scale(1.1)
+  transform: scale(1.1);
 }
 
 .git-person:hover {
   color: white;
   text-decoration: none;
-  transform: scale(1.1)
+  transform: scale(1.1);
 }
 
 .team__person {
@@ -98,11 +96,17 @@ main {
 }
 
 .hard-card {
-  background-color: #ffd4d4
+  background-color: #ffd4d4;
 }
 
-.easy-card { background-color: #e2ffe2 }
+.easy-card {
+  background-color: #e2ffe2;
+}
 
-.card__play-answer { color: #1976d2 }
+.card__play-answer {
+  color: #1976d2;
+}
 
-.page-learned { background-color: #e2ffe2 }
+.page-learned {
+  background-color: #e2ffe2;
+}
